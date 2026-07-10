@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer une fiche de personnage JDR</title>
+    <title>RollSheet - Générateur de fiches JDR</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,7 +59,113 @@
             height: 100px;
             font-family: monospace;
         }
-        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .top-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        #darkModeToggle, #randomBtn {
+            display: block;
+            width: auto;
+            margin: 0;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        #darkModeToggle {
+            background: #333;
+            color: white;
+        }
+        body.dark-mode #darkModeToggle {
+            background: #555;
+        }
+        #randomBtn {
+            background: #FF9800;
+            color: white;
+        }
+        body.dark-mode #randomBtn {
+            background: #E68A00;
+        }
+        .system-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .system-option {
+            padding: 10px 15px;
+            background: #eee;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        body.dark-mode .system-option {
+            background: #444;
+            color: #eee;
+        }
+        .system-option.selected {
+            background: #4CAF50;
+            color: white;
+        }
+        .system-option[data-system="dnd"].selected {
+            background: #8B0000;
+        }
+        .system-option[data-system="warhammer"].selected {
+            background: #004d98;
+        }
+        .attributes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .attribute-input {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+            background: #fff;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        body.dark-mode .attribute-input {
+            background: #444 !important;
+            border-color: #555 !important;
+            color: #eee !important;
+        }
+        .attribute-input label {
+            font-size: 14px;
+            margin-bottom: 0;
+            display: block;
+        }
+        .attribute-input input {
+            width: 65px !important;
+            padding: 6px !important;
+            text-align: center;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+        body.dark-mode .attribute-input input {
+            background: #222 !important;
+            color: #eee !important;
+            border: 1px solid #666 !important;
+        }
         .avatar-preview-container {
             display: none;
             align-items: center;
@@ -93,159 +201,41 @@
         .btn-remove-image:hover {
             background-color: #d32f2f;
         }
-        
-        .attributes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-            gap: 15px;
-            margin-top: 10px;
-        }
-        .attribute-input {
+        .download-buttons {
             display: flex;
-            flex-direction: column;
-            gap: 6px;
-            align-items: center;
-            background: #fff;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            transition: background-color 0.3s, color 0.3s;
-            color: #333;
-        }
-        body.dark-mode .attribute-input {
-            background: #444 !important;
-            border-color: #555 !important;
-            color: #eee !important;
-        }
-        .attribute-input label {
-            font-size: 14px;
-            margin-bottom: 0;
-            display: block;
-        }
-        .attribute-input input {
-            width: 65px !important;
-            padding: 6px !important;
-            text-align: center;
-            font-weight: bold;
-            box-sizing: border-box;
-        }
-        body.dark-mode .attribute-input input {
-            background: #222 !important;
-            color: #eee !important;
-            border: 1px solid #666 !important;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        
-        .top-controls {
-            display: flex;
-            justify-content: center;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
-        #darkModeToggle, #langToggle {
-            display: block;
+        .download-buttons button {
             width: auto;
-            margin: 0;
-            padding: 8px 16px;
-            font-size: 14px;
+            flex: 1;
+            min-width: 120px;
         }
-        #darkModeToggle {
-            background: #333;
-            color: white;
-        }
-        body.dark-mode #darkModeToggle {
-            background: #555;
-        }
-        #langToggle {
-            background: #0066cc;
-            color: white;
-        }
-        body.dark-mode #langToggle {
-            background: #004488;
-        }
-
-        #output {
+        #shareLinkContainer {
             margin-top: 20px;
             padding: 15px;
-            background: #e8f5e8;
+            background: #f0f0f0;
             border-radius: 4px;
             display: none;
         }
-        body.dark-mode #output {
-            background: #2a2a2a;
-            border: 1px solid #444;
-            color: #eee;
+        body.dark-mode #shareLinkContainer {
+            background: #333;
+            border: 1px solid #555;
         }
-        body.dark-mode #output p {
-            color: #eee;
-        }
-        body.dark-mode #output code {
-            background: #1e1e1e !important;
-            color: #eee !important;
-        }
-        .system-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        .system-option {
-            padding: 10px 15px;
-            background: #eee;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        body.dark-mode .system-option {
-            background: #444;
-            color: #eee;
-        }
-        .system-option.selected {
-            background: #4CAF50;
-            color: white;
-        }
-        .system-option[data-system="dnd"].selected {
-            background: #8B0000;
-        }
-        .system-option[data-system="warhammer"].selected {
-            background: #004d98;
-        }
-        #jsonOutput {
-            width: 100%;
-            height: 200px;
+        #shareLink {
+            word-break: break-all;
             font-family: monospace;
-            background: #f9f9f9;
-            border: 1px solid #ddd;
+            background: white;
+            padding: 8px;
             border-radius: 4px;
-            padding: 10px;
+            display: block;
+            margin-top: 8px;
         }
-        body.dark-mode #jsonOutput {
-            background: #1e1e1e;
+        body.dark-mode #shareLink {
+            background: #222;
             color: #eee;
-            border-color: #444;
         }
-        .download-btn {
-            background-color: #2196F3 !important;
-            margin-top: 10px;
-        }
-        .download-btn:hover {
-            background-color: #1976D2 !important;
-        }
-
         footer {
             margin-top: 40px;
             padding-top: 20px;
@@ -256,14 +246,10 @@
         body.dark-mode footer {
             border-top-color: #444;
         }
-        footer p {
-            margin: 5px 0;
-        }
         .license-link {
             color: #666;
             text-decoration: none;
             font-size: 12px;
-            transition: color 0.2s;
         }
         body.dark-mode .license-link {
             color: #aaa;
@@ -272,55 +258,37 @@
             color: #8B0000;
             text-decoration: underline;
         }
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 15px;
-        }
-        .footer-links a {
-            color: #2196F3;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .footer-links a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
     <div class="top-controls">
         <button id="darkModeToggle" onclick="toggleDarkMode()">🌓 Mode sombre</button>
-        <button id="langToggle" onclick="toggleLang()">🌐 English</button>
+        <button id="randomBtn" onclick="generateRandomCharacter()">🎲 Aléatoire</button>
     </div>
-    
-    <h1 id="mainTitle">Générateur de fiches JDR</h1>
-    <p id="mainSubtitle" style="text-align: center; color: #666;">
+
+    <h1>RollSheet - Générateur de fiches JDR</h1>
+    <p style="text-align: center; color: #666;">
         Remplis les champs ci-dessous pour créer ta fiche de personnage.
-        <br>Les données seront formatées en JSON pour être utilisées avec le script Python.
     </p>
 
     <div class="form-container">
         <div class="form-group">
-            <label id="lblCharacterName" for="name">Nom du personnage *</label>
+            <label for="name">Nom du personnage *</label>
             <input type="text" id="name" required placeholder="Ex: Gandalf">
         </div>
 
         <div class="form-group">
-            <label id="lblCharacterAvatar" for="avatarInput">Image du personnage (optionnel)</label>
+            <label for="avatarInput">Image du personnage (optionnel)</label>
             <input type="file" id="avatarInput" accept="image/*" onchange="previewAndSaveImage(event)">
             <input type="hidden" id="avatarBase64" value="">
-            
             <div id="avatarPreviewContainer" class="avatar-preview-container">
                 <img id="avatarPreview" src="" class="avatar-preview-img" alt="Aperçu">
-                <button type="button" id="btnRemoveImg" class="btn-remove-image" onclick="removeImage()">❌ Supprimer l'image</button>
+                <button type="button" id="btnRemoveImg" class="btn-remove-image" onclick="removeImage()">❌ Supprimer</button>
             </div>
         </div>
 
         <div class="form-group">
-            <label id="lblGameSystem">Système de jeu *</label>
+            <label>Système de jeu *</label>
             <div class="system-selector">
                 <div class="system-option selected" data-system="dnd">Donjons & Dragons</div>
                 <div class="system-option" data-system="warhammer">Warhammer</div>
@@ -329,73 +297,63 @@
         </div>
 
         <div class="form-group">
-            <label id="lblRace" for="race">Race</label>
+            <label for="race">Race</label>
             <input type="text" id="race" placeholder="Ex: Elfe, Nain, Humain">
         </div>
 
         <div class="form-group">
-            <label id="lblClass" for="className">Classe</label>
+            <label for="className">Classe</label>
             <input type="text" id="className" placeholder="Ex: Mage, Guerrier, Voleur">
         </div>
 
         <div class="form-group">
-            <label id="lblLevel" for="level">Niveau</label>
+            <label for="level">Niveau</label>
             <input type="number" id="level" min="1" max="20" value="1">
         </div>
 
         <div class="form-group">
-            <label id="lblLoadJson" for="jsonInput">Ou charge un personnage existant (JSON) :</label>
+            <label for="jsonInput">Charger un personnage (JSON) :</label>
             <input type="file" id="jsonInput" accept=".json" onchange="loadFromJSON(event)">
         </div>
 
         <div class="form-group">
-            <label id="lblAttributes">Attributs</label>
-            <div id="attributes-container" class="attributes-grid">
-            </div>
+            <label>Attributs</label>
+            <div id="attributes-container" class="attributes-grid"></div>
         </div>
 
         <div class="form-group">
-            <label id="lblSkills" for="skills">Compétences (séparées par des virgules)</label>
+            <label for="skills">Compétences (séparées par des virgules)</label>
             <input type="text" id="skills" placeholder="Ex: Magie, Athlétisme, Persuasion">
         </div>
 
         <div class="form-group">
-            <label id="lblInventory" for="inventory">Inventaire (séparé par des virgules)</label>
+            <label for="inventory">Inventaire (séparé par des virgules)</label>
             <input type="text" id="inventory" placeholder="Ex: Épée, Bouclier, Potion">
         </div>
 
         <div class="form-group">
-            <label id="lblBackstory" for="backstory">Histoire (optionnel)</label>
+            <label for="backstory">Histoire (optionnel)</label>
             <textarea id="backstory" placeholder="Décris l'histoire de ton personnage..."></textarea>
         </div>
 
-        <button id="btnGenJson" onclick="generateJSON()">Générer le code JSON</button>
-        <button id="btnGenSheet" onclick="generateSheet()" class="download-btn">📄 Générer la fiche HTML</button>
+        <button onclick="showPreview()">👀 Prévisualiser</button>
+        <div class="download-buttons">
+            <button onclick="downloadJSON()">💾 JSON</button>
+            <button onclick="downloadDOCX()">📄 DOCX (Word)</button>
+            <button onclick="downloadPDF()">📥 PDF</button>
+        </div>
 
-        <div id="output">
-            <h3 id="outReady">✅ Données prêtes à utiliser !</h3>
-            <p id="outCopy">Copie le code ci-dessous et sauvegarde-le dans un fichier <code id="outFileName">mon_perso.json</code> :</p>
-            <textarea id="jsonOutput" readonly></textarea>
-            <button id="btnDownloadJson" class="download-btn" onclick="downloadJSON()">📥 Télécharger le fichier JSON</button>
-            <p id="outTerminal" style="margin-top: 10px;">
-                Puis exécute cette commande dans ton terminal (à la racine du projet) :
-                <br><code style="background: #f0f0f0; padding: 2px 5px;">python -m src.main --from-json mon_perso.json --format html</code>
-            </p>
+        <div id="shareLinkContainer">
+            <h3>🔗 Partager cette fiche</h3>
+            <p>Copie ce lien pour partager ta fiche :</p>
+            <div id="shareLink"></div>
+            <button onclick="copyShareLink()">📋 Copier le lien</button>
         </div>
     </div>
 
-    <footer>
-        <p id="footComm">Créé pour la communauté JDR</p>
-        <p><a id="footLic" class="license-link" href="https://github.com/Ax4M3/fiches-jdr/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">📜 Sous licence MIT</a></p>
-        
-        <div class="footer-links">
-            <a id="footRepo" href="https://github.com/Ax4M3/fiches-jdr" target="_blank" rel="noopener noreferrer">📂 Dépôt GitHub</a>
-            <a href="https://piaille.fr/@Axm" target="_blank">🦣 Mastodon</a>
-            <div class="liberapay-container">
-                <script src="https://liberapay.com/AxM3/widgets/button.js"></script>
-                <noscript><a href="https://liberapay.com/AxM3/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a></noscript>
-            </div>
-        </div>
+    <footer style="margin-top: 40px; text-align: center; font-size: 14px; color: #666;">
+        <p>Créé pour la communauté JDR | <a href="https://github.com/Ax4M3/RollSheet" target="_blank" style="color: #2196F3;">📂 Dépôt GitHub</a></p>
+        <p><a href="https://github.com/Ax4M3/RollSheet/blob/main/LICENSE" target="_blank" style="color: #666;">📜 Licence MIT</a></p>
     </footer>
 
     <script>
@@ -403,205 +361,27 @@
             dnd: ["Force", "Dextérité", "Constitution", "Intelligence", "Sagesse", "Charisme"],
             warhammer: ["WS", "BS", "S", "T", "Ag", "Int", "WP", "Fel"]
         };
-
-        const translations = {
-            fr: {
-                darkMode: "🌓 Mode sombre",
-                lightMode: "🌓 Mode clair",
-                langToggle: "🌐 English",
-                mainTitle: "Générateur de fiches JDR",
-                mainSubtitle: "Remplis les champs ci-dessous pour créer ta fiche de personnage.<br>Les données seront formatées en JSON pour être utilisées avec le script Python.",
-                lblCharacterName: "Nom du personnage *",
-                lblCharacterAvatar: "Image du personnage (optionnel)",
-                btnRemoveImg: "❌ Supprimer l'image",
-                lblGameSystem: "Système de jeu *",
-                lblRace: "Race",
-                lblClass: "Classe",
-                lblLevel: "Niveau",
-                lblLoadJson: "Ou charge un personnage existant (JSON) :",
-                lblAttributes: "Attributs",
-                lblSkills: "Compétences (séparées par des virgules)",
-                lblInventory: "Inventaire (séparé par des virgules)",
-                lblBackstory: "Histoire (optionnel)",
-                btnGenJson: "Générer le code JSON",
-                btnGenSheet: "📄 Générer la fiche HTML",
-                outReady: "✅ Données prêtes à utiliser !",
-                outCopy: "Copie le code ci-dessous et sauvegarde-le dans un fichier <code id='outFileName'>mon_perso.json</code> :",
-                btnDownloadJson: "📥 Télécharger le fichier JSON",
-                outTerminal: "Puis exécute cette commande dans ton terminal (à la racine du projet) :<br><code style='background: #f0f0f0; padding: 2px 5px;'>python -m src.main --from-json mon_perso.json --format html</code>",
-                footComm: "Créé pour la communauté JDR",
-                footLic: "📜 Sous licence MIT",
-                footRepo: "📂 Dépôt GitHub",
-                placeholderName: "Ex: Gandalf",
-                placeholderRace: "Ex: Elfe, Nain, Humain",
-                placeholderClass: "Ex: Mage, Guerrier, Voleur",
-                placeholderSkills: "Ex: Magie, Athlétisme, Persuasion",
-                placeholderInventory: "Ex: Épée, Bouclier, Potion",
-                placeholderBackstory: "Décris l'histoire de ton personnage...",
-                dndAttrs: ["Force", "Dextérité", "Constitution", "Intelligence", "Sagesse", "Charisme"],
-                dndSystems: ["Donjons & Dragons", "Warhammer"],
-                errJson: "Erreur : le fichier JSON est invalide.",
-                sheetTitle: "Fiche - ",
-                sheetRace: "Race:",
-                sheetClass: "Classe:",
-                sheetLevel: "Niveau:",
-                sheetNoSpec: "Non spécifiée",
-                sheetAttr: "Attributs",
-                sheetSkills: "Compétences",
-                sheetEquip: "Équipement",
-                sheetStory: "Histoire"
-            },
-            en: {
-                darkMode: "🌓 Dark Mode",
-                lightMode: "🌓 Light Mode",
-                langToggle: "🌐 Français",
-                mainTitle: "RPG Character Sheet Generator",
-                mainSubtitle: "Fill in the fields below to create your character sheet.<br>Data will be formatted in JSON to be used with the Python script.",
-                lblCharacterName: "Character Name *",
-                lblCharacterAvatar: "Character Image (optional)",
-                btnRemoveImg: "❌ Remove image",
-                lblGameSystem: "Game System *",
-                lblRace: "Race",
-                lblClass: "Class",
-                lblLevel: "Level",
-                lblLoadJson: "Or load an existing character (JSON):",
-                lblAttributes: "Attributes",
-                lblSkills: "Skills (separated by commas)",
-                lblInventory: "Inventory (separated by commas)",
-                lblBackstory: "Backstory (optional)",
-                btnGenJson: "Generate JSON Code",
-                btnGenSheet: "📄 Generate HTML Sheet",
-                outReady: "✅ Data ready to use!",
-                outCopy: "Copy the code below and save it into a <code id='outFileName'>my_char.json</code> file:",
-                btnDownloadJson: "📥 Download JSON File",
-                outTerminal: "Then execute this command in your terminal (at the project root):<br><code style='background: #f0f0f0; padding: 2px 5px;'>python -m src.main --from-json my_char.json --format html</code>",
-                footComm: "Created for the RPG community",
-                footLic: "📜 Under MIT License",
-                footRepo: "📂 GitHub Repository",
-                placeholderName: "E.g., Gandalf",
-                placeholderRace: "E.g., Elf, Dwarf, Human",
-                placeholderClass: "E.g., Mage, Warrior, Rogue",
-                placeholderSkills: "E.g., Magic, Athletics, Persuasion",
-                placeholderInventory: "E.g., Sword, Shield, Potion",
-                placeholderBackstory: "Describe your character's backstory...",
-                dndAttrs: ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"],
-                dndSystems: ["Dungeons & Dragons", "Warhammer"],
-                errJson: "Error: Invalid JSON file.",
-                sheetTitle: "Sheet - ",
-                sheetRace: "Race:",
-                sheetClass: "Class:",
-                sheetLevel: "Level:",
-                sheetNoSpec: "Unspecified",
-                sheetAttr: "Attributes",
-                sheetSkills: "Skills",
-                sheetEquip: "Equipment",
-                sheetStory: "Backstory"
-            }
-        };
-
         let currentSystem = "dnd";
-        let currentLang = localStorage.getItem('lang') || 'fr';
+        let shareLink = '';
 
         loadAttributes();
-        applyTranslations();
-
-        document.querySelectorAll('.system-option').forEach(option => {
-            option.addEventListener('click', () => {
-                document.querySelectorAll('.system-option').forEach(opt => opt.classList.remove('selected'));
-                option.classList.add('selected');
-                currentSystem = option.dataset.system;
-                document.getElementById('system').value = currentSystem;
-                loadAttributes();
-            });
-        });
-
-        function applyTranslations() {
-            const t = translations[currentLang];
-            document.documentElement.lang = currentLang;
-            
-            document.getElementById('langToggle').textContent = t.langToggle;
-            
-            const isDark = document.body.classList.contains('dark-mode');
-            document.getElementById('darkModeToggle').textContent = isDark ? t.lightMode : t.darkMode;
-            
-            document.getElementById('mainTitle').textContent = t.mainTitle;
-            document.getElementById('mainSubtitle').innerHTML = t.mainSubtitle;
-            document.getElementById('lblCharacterName').textContent = t.lblCharacterName;
-            document.getElementById('lblCharacterAvatar').textContent = t.lblCharacterAvatar;
-            document.getElementById('btnRemoveImg').textContent = t.btnRemoveImg;
-            document.getElementById('lblGameSystem').textContent = t.lblGameSystem;
-            document.getElementById('lblRace').textContent = t.lblRace;
-            document.getElementById('lblClass').textContent = t.lblClass;
-            document.getElementById('lblLevel').textContent = t.lblLevel;
-            document.getElementById('lblLoadJson').textContent = t.lblLoadJson;
-            document.getElementById('lblAttributes').textContent = t.lblAttributes;
-            document.getElementById('lblSkills').textContent = t.lblSkills;
-            document.getElementById('lblInventory').textContent = t.lblInventory;
-            document.getElementById('lblBackstory').textContent = t.lblBackstory;
-            document.getElementById('btnGenJson').textContent = t.btnGenJson;
-            document.getElementById('btnGenSheet').textContent = t.btnGenSheet;
-            document.getElementById('outReady').textContent = t.outReady;
-            document.getElementById('outCopy').innerHTML = t.outCopy;
-            document.getElementById('btnDownloadJson').textContent = t.btnDownloadJson;
-            document.getElementById('outTerminal').innerHTML = t.outTerminal;
-            document.getElementById('footComm').textContent = t.footComm;
-            document.getElementById('footLic').textContent = t.footLic;
-            document.getElementById('footRepo').textContent = t.footRepo;
-
-            document.getElementById('name').placeholder = t.placeholderName;
-            document.getElementById('race').placeholder = t.placeholderRace;
-            document.getElementById('className').placeholder = t.placeholderClass;
-            document.getElementById('skills').placeholder = t.placeholderSkills;
-            document.getElementById('inventory').placeholder = t.placeholderInventory;
-            document.getElementById('backstory').placeholder = t.placeholderBackstory;
-
-            const sysOptions = document.querySelectorAll('.system-option');
-            if (sysOptions.length >= 2) {
-                sysOptions[0].textContent = t.dndSystems[0];
-                sysOptions[1].textContent = t.dndSystems[1];
-            }
-
-            loadAttributes();
-        }
-
-        function toggleLang() {
-            currentLang = currentLang === 'fr' ? 'en' : 'fr';
-            localStorage.setItem('lang', currentLang);
-            applyTranslations();
-        }
+        loadFromLocalStorage();
+        setupEventListeners();
 
         function loadAttributes() {
             const container = document.getElementById('attributes-container');
-            
-            const savedValues = {};
-            container.querySelectorAll('input').forEach(input => {
-                if (input.dataset.key) {
-                    savedValues[input.dataset.key] = input.value;
-                }
-            });
-
             container.innerHTML = '';
 
-            let attrs = [];
-            if (currentSystem === 'dnd') {
-                attrs = systemAttributes.dnd.map((attr, index) => ({
-                    key: attr,
-                    label: translations[currentLang].dndAttrs[index]
-                }));
-            } else {
-                attrs = systemAttributes.warhammer.map(attr => ({
-                    key: attr,
-                    label: attr
-                }));
-            }
+            const attrs = currentSystem === 'dnd'
+                ? systemAttributes.dnd
+                : systemAttributes.warhammer;
 
             attrs.forEach(attr => {
                 const group = document.createElement('div');
                 group.className = 'attribute-input';
-                const val = savedValues[attr.key] || "10";
                 group.innerHTML = `
-                    <label>${attr.label}:</label>
-                    <input type="number" data-attr="${attr.label}" data-key="${attr.key}" min="1" max="100" value="${val}">
+                    <label>${attr}:</label>
+                    <input type="number" data-attr="${attr}" min="1" max="100" value="10">
                 `;
                 container.appendChild(group);
             });
@@ -614,12 +394,10 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('avatarBase64').value = e.target.result;
-                
                 const previewImg = document.getElementById('avatarPreview');
                 const previewContainer = document.getElementById('avatarPreviewContainer');
                 previewImg.src = e.target.result;
                 previewContainer.style.display = 'flex';
-                
                 saveToLocalStorage();
             };
             reader.readAsDataURL(file);
@@ -628,179 +406,12 @@
         function removeImage() {
             document.getElementById('avatarInput').value = "";
             document.getElementById('avatarBase64').value = "";
-            
-            const previewContainer = document.getElementById('avatarPreviewContainer');
             document.getElementById('avatarPreview').src = "";
-            previewContainer.style.display = 'none';
-            
+            document.getElementById('avatarPreviewContainer').style.display = 'none';
             saveToLocalStorage();
         }
 
-        function generateJSON() {
-            const name = document.getElementById('name').value;
-            const system = document.getElementById('system').value;
-            const race = document.getElementById('race').value;
-            const className = document.getElementById('className').value;
-            const level = document.getElementById('level').value;
-            const avatar = document.getElementById('avatarBase64').value;
-            const skills = document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s);
-            const inventory = document.getElementById('inventory').value.split(',').map(i => i.trim()).filter(i => i);
-            const backstory = document.getElementById('backstory').value;
-
-            const attributes = {};
-            document.querySelectorAll('#attributes-container input').forEach(input => {
-                const attrName = input.dataset.attr;
-                attributes[attrName] = parseInt(input.value) || 10;
-            });
-
-            const character = {
-                name: name,
-                system: system,
-                race: race || null,
-                class_name: className || null,
-                level: parseInt(level) || 1,
-                avatar: avatar || null,
-                attributes: attributes,
-                skills: skills,
-                inventory: inventory,
-                backstory: backstory || null,
-                game_system: system
-            };
-
-            const jsonOutput = document.getElementById('jsonOutput');
-            jsonOutput.value = JSON.stringify(character, null, 2);
-            document.getElementById('output').style.display = 'block';
-            document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function downloadJSON() {
-            const data = document.getElementById('jsonOutput').value;
-            const blob = new Blob([data], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            const defName = currentLang === 'fr' ? 'mon_perso' : 'my_char';
-            a.download = `${document.getElementById('name').value || defName}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        function loadFromJSON(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    document.getElementById('name').value = data.name || '';
-                    document.getElementById('system').value = data.system || 'dnd';
-                    document.getElementById('race').value = data.race || '';
-                    document.getElementById('className').value = data.class_name || '';
-                    document.getElementById('level').value = data.level || 1;
-                    document.getElementById('avatarBase64').value = data.avatar || '';
-                    document.getElementById('skills').value = data.skills ? data.skills.join(', ') : '';
-                    document.getElementById('inventory').value = data.inventory ? data.inventory.join(', ') : '';
-                    document.getElementById('backstory').value = data.backstory || '';
-
-                    const previewContainer = document.getElementById('avatarPreviewContainer');
-                    if (data.avatar) {
-                        document.getElementById('avatarPreview').src = data.avatar;
-                        previewContainer.style.display = 'flex';
-                    } else {
-                        previewContainer.style.display = 'none';
-                    }
-
-                    document.querySelectorAll('.system-option').forEach(opt => {
-                        opt.classList.remove('selected');
-                        if (opt.dataset.system === data.system) opt.classList.add('selected');
-                    });
-                    currentSystem = data.system;
-                    loadAttributes();
-
-                    setTimeout(() => {
-                        document.querySelectorAll('#attributes-container input').forEach(input => {
-                            const attrLabel = input.dataset.attr;
-                            const attrKey = input.dataset.key;
-                            if (data.attributes) {
-                                if (data.attributes[attrLabel] !== undefined) {
-                                    input.value = data.attributes[attrLabel];
-                                } else if (data.attributes[attrKey] !== undefined) {
-                                    input.value = data.attributes[attrKey];
-                                }
-                            }
-                        });
-                    }, 100);
-                } catch (err) {
-                    alert(translations[currentLang].errJson);
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        function saveToLocalStorage() {
-            const data = {
-                name: document.getElementById('name').value,
-                system: document.getElementById('system').value,
-                race: document.getElementById('race').value,
-                className: document.getElementById('className').value,
-                level: document.getElementById('level').value,
-                avatar: document.getElementById('avatarBase64').value,
-                skills: document.getElementById('skills').value,
-                inventory: document.getElementById('inventory').value,
-                backstory: document.getElementById('backstory').value,
-                attributes: {}
-            };
-            document.querySelectorAll('#attributes-container input').forEach(input => {
-                data.attributes[input.dataset.key] = input.value;
-            });
-            localStorage.setItem('lastCharacter', JSON.stringify(data));
-        }
-
-        function loadFromLocalStorage() {
-            const saved = localStorage.getItem('lastCharacter');
-            if (saved) {
-                const data = JSON.parse(saved);
-                document.getElementById('name').value = data.name || '';
-                document.getElementById('system').value = data.system || 'dnd';
-                document.getElementById('race').value = data.race || '';
-                document.getElementById('className').value = data.className || '';
-                document.getElementById('level').value = data.level || 1;
-                document.getElementById('avatarBase64').value = data.avatar || '';
-                document.getElementById('skills').value = data.skills || '';
-                document.getElementById('inventory').value = data.inventory || '';
-                document.getElementById('backstory').value = data.backstory || '';
-
-                const previewContainer = document.getElementById('avatarPreviewContainer');
-                if (data.avatar) {
-                    document.getElementById('avatarPreview').src = data.avatar;
-                    previewContainer.style.display = 'flex';
-                } else {
-                    previewContainer.style.display = 'none';
-                }
-
-                document.querySelectorAll('.system-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                    if (opt.dataset.system === data.system) opt.classList.add('selected');
-                });
-                currentSystem = data.system;
-                loadAttributes();
-
-                setTimeout(() => {
-                    for (const [key, value] of Object.entries(data.attributes)) {
-                        const input = document.querySelector(`#attributes-container input[data-key="${key}"]`);
-                        if (input) input.value = value;
-                    }
-                }, 100);
-            }
-        }
-
-        function generateSheet() {
-            generateJSON();
-            const t = translations[currentLang];
-
+        function getCharacterData() {
             const name = document.getElementById('name').value;
             const system = document.getElementById('system').value;
             const race = document.getElementById('race').value;
@@ -816,14 +427,94 @@
                 attributes[input.dataset.attr] = parseInt(input.value) || 10;
             });
 
+            return {
+                name: name,
+                system: system,
+                race: race || null,
+                class_name: className || null,
+                level: parseInt(level) || 1,
+                avatar: avatar || null,
+                attributes: attributes,
+                skills: skills,
+                inventory: inventory,
+                backstory: backstory || null,
+                game_system: system
+            };
+        }
+
+        function loadCharacterData(data) {
+            document.getElementById('name').value = data.name || '';
+            document.getElementById('system').value = data.system || 'dnd';
+            document.getElementById('race').value = data.race || '';
+            document.getElementById('className').value = data.class_name || '';
+            document.getElementById('level').value = data.level || 1;
+            document.getElementById('avatarBase64').value = data.avatar || '';
+            document.getElementById('skills').value = data.skills ? data.skills.join(', ') : '';
+            document.getElementById('inventory').value = data.inventory ? data.inventory.join(', ') : '';
+            document.getElementById('backstory').value = data.backstory || '';
+
+            const previewContainer = document.getElementById('avatarPreviewContainer');
+            if (data.avatar) {
+                document.getElementById('avatarPreview').src = data.avatar;
+                previewContainer.style.display = 'flex';
+            } else {
+                previewContainer.style.display = 'none';
+            }
+
+            document.querySelectorAll('.system-option').forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.dataset.system === data.system) opt.classList.add('selected');
+            });
+            currentSystem = data.system;
+            loadAttributes();
+
+            setTimeout(() => {
+                document.querySelectorAll('#attributes-container input').forEach(input => {
+                    const attrName = input.dataset.attr;
+                    if (data.attributes && data.attributes[attrName] !== undefined) {
+                        input.value = data.attributes[attrName];
+                    }
+                });
+            }, 100);
+        }
+
+        function saveToLocalStorage() {
+            const data = getCharacterData();
+            localStorage.setItem('lastCharacter', JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('lastCharacter');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    loadCharacterData(data);
+                } catch (e) {
+                    console.error("Erreur de chargement depuis localStorage", e);
+                }
+            }
+        }
+
+        function generateSheetHTML(character) {
+            const name = character.name || 'Personnage sans nom';
+            const system = character.system;
+            const race = character.race || 'Non spécifiée';
+            const className = character.class_name || 'Non spécifiée';
+            const level = character.level || 1;
+            const avatar = character.avatar;
+            const skills = character.skills;
+            const inventory = character.inventory;
+            const backstory = character.backstory;
+            const attributes = character.attributes;
+
             let html = `
 <!DOCTYPE html>
-<html lang="${currentLang}">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>${t.sheetTitle} ${name}</title>
+    <title>Fiche - ${name}</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; color: #333; }
         .sheet { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; }
         .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 20px; }
         .identity-block { display: flex; align-items: center; gap: 20px; }
@@ -837,9 +528,22 @@
         .section h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
         ul { list-style-type: none; padding: 0; }
         li { padding: 5px 0; }
-        @media print {
-            body { background: white; }
-            .sheet { box-shadow: none; }
+        @media print { body { background: white; } .sheet { box-shadow: none; } }
+        .back-button {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .back-button:hover {
+            background: #45a049;
         }
     </style>
 </head>
@@ -848,32 +552,23 @@
         <div class="header">
             <div class="identity-block">
                 ${avatar ? `<img src="${avatar}" class="avatar-img" alt="Avatar">` : ''}
-                <div>
-                    <h1>${name}</h1>
-                </div>
+                <div><h1>${name}</h1></div>
             </div>
             <div>
-                <strong>${t.sheetRace}</strong> ${race || t.sheetNoSpec}<br>
-                <strong>${t.sheetClass}</strong> ${className || t.sheetNoSpec}<br>
-                <strong>${t.sheetLevel}</strong> ${level || 1}
+                <strong>Race:</strong> ${race}<br>
+                <strong>Classe:</strong> ${className}<br>
+                <strong>Niveau:</strong> ${level}
             </div>
         </div>
-
         <div class="section">
-            <h2>${t.sheetAttr}</h2>
+            <h2>Attributs</h2>
             <div class="attributes">
-    `;
-
-            for (const [attr, value] of Object.entries(attributes)) {
-                html += `
-                <div class="attr-box">
-                    <div class="attr-name">${attr}</div>
-                    <div class="attr-value">${value}</div>
-                </div>
-                `;
-            }
-
-            html += `
+                ${Object.entries(attributes).map(([attr, value]) => `
+                    <div class="attr-box">
+                        <div class="attr-name">${attr}</div>
+                        <div class="attr-value">${value}</div>
+                    </div>
+                `).join('')}
             </div>
         </div>
     `;
@@ -881,10 +576,8 @@
             if (skills.length > 0) {
                 html += `
         <div class="section">
-            <h2>${t.sheetSkills}</h2>
-            <ul>
-                ${skills.map(skill => `<li>${skill}</li>`).join('')}
-            </ul>
+            <h2>Compétences</h2>
+            <ul>${skills.map(skill => `<li>${skill}</li>`).join('')}</ul>
         </div>
                 `;
             }
@@ -892,10 +585,8 @@
             if (inventory.length > 0) {
                 html += `
         <div class="section">
-            <h2>${t.sheetEquip}</h2>
-            <ul>
-                ${inventory.map(item => `<li>${item}</li>`).join('')}
-            </ul>
+            <h2>Équipement</h2>
+            <ul>${inventory.map(item => `<li>${item}</li>`).join('')}</ul>
         </div>
                 `;
             }
@@ -903,39 +594,214 @@
             if (backstory) {
                 html += `
         <div class="section">
-            <h2>${t.sheetStory}</h2>
+            <h2>Histoire</h2>
             <p>${backstory}</p>
         </div>
                 `;
             }
 
             html += `
+        <a href="javascript:window.close()" class="back-button">⬅️ Retour au formulaire</a>
     </div>
 </body>
 </html>
             `;
+            return html;
+        }
 
-            const win = window.open();
-            win.document.write(html);
-            win.document.close();
+        function showPreview() {
+            const character = getCharacterData();
+            const html = generateSheetHTML(character);
+            const previewWindow = window.open();
+            previewWindow.document.write(html);
+            previewWindow.document.close();
+        }
+
+        function downloadJSON() {
+            const character = getCharacterData();
+            const data = JSON.stringify(character, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            saveAs(blob, `${character.name || 'mon_perso'}.json`);
+        }
+
+        function downloadDOCX() {
+            const character = getCharacterData();
+            const html = generateSheetHTML(character);
+            const blob = new Blob([html], { type: 'text/html' });
+            saveAs(blob, `${character.name || 'fiche_personnage'}.docx`);
+        }
+
+        function downloadPDF() {
+            const character = getCharacterData();
+            const html = generateSheetHTML(character);
+            const name = character.name || 'fiche_personnage';
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            document.body.appendChild(tempDiv);
+
+            const opt = {
+                margin: 10,
+                filename: `${name}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().from(tempDiv).set(opt).save().then(() => {
+                document.body.removeChild(tempDiv);
+            });
+        }
+
+        function generateShareLink() {
+            const character = getCharacterData();
+            const data = JSON.stringify(character);
+            const encodedData = btoa(encodeURIComponent(data));
+            const baseUrl = window.location.origin + window.location.pathname;
+            shareLink = `${baseUrl}?data=${encodedData}`;
+            document.getElementById('shareLink').textContent = shareLink;
+            document.getElementById('shareLinkContainer').style.display = 'block';
+        }
+
+        function copyShareLink() {
+            navigator.clipboard.writeText(shareLink).then(() => {
+                alert("✅ Lien copié dans le presse-papiers !");
+            }).catch(err => {
+                const textarea = document.createElement('textarea');
+                textarea.value = shareLink;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert("✅ Lien copié !");
+            });
+        }
+
+        function generateRandomCharacter() {
+            const system = document.getElementById('system').value;
+            let name, race, className, attributes = {};
+
+            const dndData = {
+                names: ["Aragorn", "Gandalf", "Legolas", "Gimli", "Frodon", "Bilbon"],
+                races: ["Humain", "Elfe", "Nain", "Halfelin", "Orc"],
+                classes: ["Guerrier", "Mage", "Voleur", "Prêtre", "Barbare"],
+                skills: ["Magie", "Combat", "Furtivité", "Persuasion", "Athlétisme", "Survie"],
+                inventory: ["Épée", "Bouclier", "Arc", "Potion de soin", "Armure", "Bâton"]
+            };
+
+            const warhammerData = {
+                names: ["Sigmar", "Karl Franz", "Grimnir", "Balthasar", "Ludwig"],
+                races: ["Humain", "Nain", "Elfe", "Haut-Elfe", "Orque"],
+                classes: ["Guerrier", "Chasseur", "Prêtre", "Mage", "Mercenaire"],
+                skills: ["Commandement", "Tir", "Mêlée", "Furtivité", "Résistance"],
+                inventory: ["Épée", "Armure", "Bouclier", "Potion", "Hache"]
+            };
+
+            const data = system === 'dnd' ? dndData : warhammerData;
+
+            name = data.names[Math.floor(Math.random() * data.names.length)];
+            race = data.races[Math.floor(Math.random() * data.races.length)];
+            className = data.classes[Math.floor(Math.random() * data.classes.length)];
+
+            if (system === 'dnd') {
+                const rollDice = () => {
+                    const rolls = [Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1];
+                    rolls.sort((a, b) => b - a);
+                    return rolls[0] + rolls[1];
+                };
+                systemAttributes.dnd.forEach(attr => {
+                    attributes[attr] = rollDice();
+                });
+            } else {
+                systemAttributes.warhammer.forEach(attr => {
+                    attributes[attr] = Math.floor(Math.random() * 60) + 20;
+                });
+            }
+
+            const skills = [];
+            for (let i = 0; i < 3; i++) {
+                const skill = data.skills[Math.floor(Math.random() * data.skills.length)];
+                if (!skills.includes(skill)) skills.push(skill);
+            }
+
+            const inventory = [];
+            for (let i = 0; i < 3; i++) {
+                const item = data.inventory[Math.floor(Math.random() * data.inventory.length)];
+                if (!inventory.includes(item)) inventory.push(item);
+            }
+
+            const level = Math.floor(Math.random() * 10) + 1;
+            const backstories = [
+                "Un aventurier en quête de gloire.",
+                "Un héros marqué par une tragédie.",
+                "Un mercenaire endurci par les batailles.",
+                "Un érudit en quête de savoir.",
+                "Un vagabond qui a vu trop de choses."
+            ];
+            const backstory = backstories[Math.floor(Math.random() * backstories.length)];
+
+            const character = {
+                name: name,
+                system: system,
+                race: race,
+                class_name: className,
+                level: level,
+                attributes: attributes,
+                skills: skills,
+                inventory: inventory,
+                backstory: backstory,
+                game_system: system
+            };
+
+            loadCharacterData(character);
+            generateShareLink();
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('.system-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.system-option').forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    currentSystem = option.dataset.system;
+                    document.getElementById('system').value = currentSystem;
+                    loadAttributes();
+                });
+            });
+
+            const inputs = document.querySelectorAll('input:not([type="file"]), textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', saveToLocalStorage);
+            });
+
+            document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+            loadFromUrl();
         }
 
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-            const t = translations[currentLang];
-            document.getElementById('darkModeToggle').textContent = document.body.classList.contains('dark-mode') ? t.lightMode : t.darkMode;
+            document.getElementById('darkModeToggle').textContent =
+                document.body.classList.contains('dark-mode') ? '🌓 Mode clair' : '🌓 Mode sombre';
+        }
+
+        function loadFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const data = urlParams.get('data');
+            if (data) {
+                try {
+                    const decodedData = decodeURIComponent(atob(data));
+                    const character = JSON.parse(decodedData);
+                    loadCharacterData(character);
+                } catch (e) {
+                    console.error("Erreur de chargement depuis URL : ", e);
+                }
+            }
         }
 
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark-mode');
+            document.getElementById('darkModeToggle').textContent = '🌓 Mode clair';
         }
-
-        window.addEventListener('load', loadFromLocalStorage);
-
-        document.querySelectorAll('input:not([type="file"]), textarea').forEach(el => {
-            el.addEventListener('change', saveToLocalStorage);
-        });
     </script>
 </body>
 </html>
