@@ -20,12 +20,32 @@
             border-bottom: 2px solid #ddd;
             padding-bottom: 10px;
         }
+        .lang-switcher {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .lang-select {
+            padding: 6px 10px;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: white;
+            color: #333;
+            cursor: pointer;
+            font-weight: bold;
+        }
         .license-box {
             background: white;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             margin-top: 20px;
+        }
+        .lang-content {
+            display: none;
+        }
+        .lang-content.active {
+            display: block;
         }
         .back-link {
             display: block;
@@ -51,45 +71,176 @@
                 color: #ffaaaa;
                 border-bottom-color: #555;
             }
+            .lang-select {
+                background-color: #444;
+                color: #eee;
+                border-color: #666;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>📜 Licence MIT - RollSheet</h1>
 
-    <div class="license-box">
-        <p><strong>Copyright (c) 2026 Ax4M3</strong></p>
-
-        <p>
-            Permission est accordée, gratuitement, à toute personne obtenant une copie
-            de ce logiciel et des fichiers de documentation associés (le "Logiciel"),
-            de traiter dans le Logiciel sans restriction, y compris les droits
-            d'utiliser, copier, modifier, fusionner, publier, distribuer, sous-licencier,
-            et/ou vendre des copies du Logiciel, et de permettre aux personnes
-            à qui le Logiciel est fourni de le faire, sous réserve des conditions suivantes :
-        </p>
-
-        <p>
-            L'avis de copyright ci-dessus et cet avis de permission doivent être inclus dans
-            toutes les copies ou portions substantielles du Logiciel.
-        </p>
-
-        <p>
-            LE LOGICIEL EST FOURNI "TEL QUEL", SANS GARANTIE D'AUCUNE SORTE, EXPLICITE
-            OU IMPLICITE, Y COMPRIS, MAIS SANS S'Y LIMITER, LES GARANTIES DE
-            COMMERCIALISABILITÉ, D'ADÉQUATION À UN USAGE PARTICULIER ET DE NON-VIOLATION
-            DE DROITS. EN AUCUN CAS, LES AUTEURS OU TITULAIRES DU COPYRIGHT NE SERONT
-            TENUS RESPONSABLES DE TOUTE RÉCLAMATION, DOMMAGES OU AUTRES RESPONSABILITÉS,
-            QUE CE SOIT DANS UNE ACTION DE CONTRAT, DE DÉLIT OU AUTRE, QUI DÉCOULE
-            DE, OU EN CONNEXION AVEC LE LOGICIEL OU L'UTILISATION OU AUTRES OPÉRATIONS
-            DANS LE LOGICIEL.
-        </p>
+    <div class="lang-switcher">
+        <select class="lang-select" id="langSelect" onchange="switchLang(this.value)">
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+        </select>
     </div>
 
-    <a href="javascript:history.back()" class="back-link">⬅️ Retour à RollSheet</a>
-    <div style="text-align: center; margin-top: 30px;">
-    <p>Ce projet est hébergé sur GitHub :</p>
-    <a href="https://github.com/Ax4M3/RollSheet" target="_blank" style="color: #2196F3; font-weight: bold;">📂 Voir le dépôt</a>
+    <div id="content-fr" class="lang-content active">
+        <h1>📜 Licence MIT - RollSheet</h1>
+        <div class="license-box">
+            <p><strong>Copyright (c) 2026 Ax4M3</strong></p>
+            <p>
+                Permission est accordée, gratuitement, à toute personne obtenant une copie
+                de ce logiciel et des fichiers de documentation associés (le "Logiciel"),
+                de traiter dans le Logiciel sans restriction, y compris les droits
+                d'utiliser, copier, modifier, fusionner, publier, distribuer, sous-licencier,
+                et/ou vendre des copies du Logiciel, et de permettre aux personnes
+                à qui le Logiciel est fourni de le faire, sous réserve des conditions suivantes :
+            </p>
+            <p>
+                L'avis de copyright ci-dessus et cet avis de permission doivent être inclus dans
+                toutes les copies ou portions substantielles du Logiciel.
+            </p>
+            <p>
+                LE LOGICIEL EST FOURNI "TEL QUEL", SANS GARANTIE D'AUCUNE SORTE, EXPLICITE
+                OU IMPLICITE, Y COMPRIS, MAIS SANS S'Y LIMITER, LES GARANTIES DE
+                COMMERCIALISABILITÉ, D'ADÉQUATION À UN USAGE PARTICULIER ET DE NON-VIOLATION
+                DE DROITS. EN AUCUN CAS, LES AUTEURS OU TITULAIRES DU COPYRIGHT NE SERONT
+                TENUS RESPONSABLES DE TOUTE RÉCLAMATION, DOMMAGES OU AUTRES RESPONSABILITÉS,
+                QUE CE SOIT DANS UNE ACTION DE CONTRAT, DE DÉLIT OU AUTRE, QUI DÉCOULE
+                DE, OU EN CONNEXION AVEC LE LOGICIEL OU L'UTILISATION OU AUTRES OPÉRATIONS
+                DANS LE LOGICIEL.
+            </p>
+        </div>
+        
+        <a href="https://ax4m3.github.io/RollSheet/" class="back-link">⬅️ Retour à RollSheet</a>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <p>Ce projet est hébergé sur GitHub :</p>
+            <a href="https://github.com/Ax4M3/RollSheet" target="_blank" style="color: #2196F3; font-weight: bold;">📂 Voir le dépôt</a>
+        </div>
     </div>
+
+    <div id="content-en" class="lang-content">
+        <h1>📜 MIT License - RollSheet</h1>
+        <div class="license-box">
+            <p><strong>Copyright (c) 2026 Ax4M3</strong></p>
+            <p>
+                Permission is hereby granted, free of charge, to any person obtaining a copy
+                of this software and associated documentation files (the "Software"), to deal
+                in the Software without restriction, including without limitation the rights
+                to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                copies of the Software, and to permit persons to whom the Software is
+                furnished to do so, subject to the following conditions:
+            </p>
+            <p>
+                The above copyright notice and this permission notice shall be included in all
+                copies or substantial portions of the Software.
+            </p>
+            <p>
+                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                SOFTWARE.
+            </p>
+        </div>
+
+        <a href="https://ax4m3.github.io/RollSheet/" class="back-link">⬅️ Back to RollSheet</a>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <p>This project is hosted on GitHub:</p>
+            <a href="https://github.com/Ax4M3/RollSheet" target="_blank" style="color: #2196F3; font-weight: bold;">📂 View Repository</a>
+        </div>
+    </div>
+
+    <div id="content-es" class="lang-content">
+        <h1>📜 Licencia MIT - RollSheet</h1>
+        <div class="license-box">
+            <p><strong>Copyright (c) 2026 Ax4M3</strong></p>
+            <p>
+                Por la presente se concede permiso, sin cargo alguno, a cualquier persona que obtenga una copia
+                de este software y de los archivos de documentación asociados (el "Software"), para utilizar
+                el Software sin restricciones, incluyendo, sin limitación, los derechos de usar, copiar, modificar,
+                fusionar, publicar, distribuir, sublicenciar y/o vender copias del Software, y para permitir a las
+                personas a quienes se les proporcione el Software que lo hagan, sujeto a las siguientes condiciones:
+            </p>
+            <p>
+                El aviso de derechos de autor anterior y este aviso de permiso se incluirán en todas las copias o
+                partes sustanciales del Software.
+            </p>
+            <p>
+                EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUYENDO,
+                PERO SIN LIMITARSE A, GARANTÍAS DE COMERCIALIZACIÓN, IDONEIDAD PARA UN PROPÓSITO PARTICULAR E
+                INCUMPLIMIENTO. EN NINGÚN CASO LOS AUTORES O TITULARES DE LOS DERECHOS DE AUTOR SERÁN RESPONSABLES
+                DE NINGUNA RECLAMACIÓN, DAÑOS U OTRAS RESPONSABILIDADES, YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O
+                DE OTRO MODO, QUE SURJA DE, FUERA DE O EN CONEXIÓN CON EL SOFTWARE O EL USO U OTROS VÍNCULOS EN EL SOFTWARE.
+            </p>
+        </div>
+
+        <a href="https://ax4m3.github.io/RollSheet/" class="back-link">⬅️ Volver a RollSheet</a>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <p>Este proyecto está alojado en GitHub:</p>
+            <a href="https://github.com/Ax4M3/RollSheet" target="_blank" style="color: #2196F3; font-weight: bold;">📂 Ver el repositorio</a>
+        </div>
+    </div>
+
+    <div id="content-de" class="lang-content">
+        <h1>📜 MIT-Lizenz - RollSheet</h1>
+        <div class="license-box">
+            <p><strong>Copyright (c) 2026 Ax4M3</strong></p>
+            <p>
+                Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien
+                (die "Software") erhält, die Erlaubnis erteilt, sie uneingeschränkt zu nutzen, einschließlich und ohne
+                Einschränkung der Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen, Veröffentlichen, Verteilen,
+                Unterlizenzieren und/oder Verkaufen von Kopien der Software, sowie den Personen, denen die Software
+                zur Verfügung gestellt wird, dies unter den folgenden Bedingungen zu gestatten:
+            </p>
+            <p>
+                Der obige Urheberrechtshinweis und dieser Genehmigungshinweis müssen in allen Kopien oder wesentlichen
+                Teilen der Software enthalten sein.
+            </p>
+            <p>
+                DIE SOFTWARE WIRD "WIE BESEHEN" BEREITGESTELLT, OHNE MÄNGELGEWÄHR UND OHNE JEGLICHE AUSDRÜCKLICHE ODER
+                KONKLUDENTE GARANTIE, EINSCHLIESSLICH, ABER NICHT BESCHRÄNKT AUF DIE GARANTIEN DER MARKTGÄNGIGKEIT,
+                EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG VON RECHTEN DRITTER. IN KEINEM FALL SIND DIE AUTOREN
+                ODER URHEBERRECHTSINHABER FÜR ANSPRÜCHE, SCHÄDEN ODER ANDERE VERPFLICHTUNGEN HAFTBAR, OB IN EINER VERTRAGS-,
+                DELIKTS- ODER ANDERWEITIGEN KLAGE, DIE SICH AUS, IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER
+                ANDEREN GESCHÄFTEN MIT DER SOFTWARE ERGEBEN.
+            </p>
+        </div>
+
+        <a href="https://ax4m3.github.io/RollSheet/" class="back-link">⬅️ Zurück zu RollSheet</a>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <p>Dieses Projekt wird auf GitHub gehostet:</p>
+            <a href="https://github.com/Ax4M3/RollSheet" target="_blank" style="color: #2196F3; font-weight: bold;">📂 Repository anzeigen</a>
+        </div>
+    </div>
+
+    <script>
+    function switchLang(lang) {
+        document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
+        document.getElementById('content-' + lang).classList.add('active');
+        const titles = {
+            fr: "Licence MIT - RollSheet",
+            en: "MIT License - RollSheet",
+            es: "Licencia MIT - RollSheet",
+            de: "MIT-Lizenz - RollSheet"
+        };
+        
+        if (titles[lang]) {
+            document.title = titles[lang];
+        }
+    }
+    </script>
 </body>
 </html>
