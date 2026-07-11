@@ -26,10 +26,10 @@ The project is written entirely in HTML, CSS, and pure JavaScript, and runs dire
 - **Multilingual system**: Interface available in Deutch (DE), English (EN), Español (ES), and Français (FR).
 - **Responsive theme**: Built-in dark mode to protect your eyes during late-night sessions.
 - **Export multi-formats** :
- - **📥 PDF**: Generate a print-ready character sheet via.
- - **📄 DOCX (Word)**: Export an editable file to fine-tune your character sheet in your word processor.
- - **💾 JSON**: Save your character's data structure to reload it later.
- - **Share**: Share your character sheet using the generated link provided.
+  - **📥 PDF**: Generate a print-ready character sheet via.
+  - **📄 DOCX (Word)**: Export an editable file to fine-tune your character sheet in your word processor.
+  - **💾 JSON**: Save your character's data structure to reload it later.
+  - **Share**: Share your character sheet using the generated link provided.
 
 ## Use & Installation
 
