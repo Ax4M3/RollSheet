@@ -73,6 +73,36 @@
         button:hover {
             background-color: #45a049;
         }
+        .lang-select {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #333;
+            font-size: 14px;
+            cursor: pointer;
+            width: 150px;
+            margin: 0;
+            height: 40px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 12px;
+        }
+        body.dark-mode .lang-select {
+            background-color: #444;
+            color: #eee;
+            border-color: #666;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23eee' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 12px
+        }
+        body.dark-mode .lang-select option {
+            background-color: #444;
+            color: #eee;
+        }
         .top-controls {
             display: flex;
             justify-content: center;
@@ -80,7 +110,7 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        #darkModeToggle, #langToggle, #randomBtn {
+        #darkModeToggle, #randomBtn {
             display: block;
             width: auto;
             margin: 0;
@@ -93,13 +123,6 @@
         }
         body.dark-mode #darkModeToggle {
             background: #555;
-        }
-        #langToggle {
-            background: #0066cc;
-            color: white;
-        }
-        body.dark-mode #langToggle {
-            background: #004488;
         }
         #randomBtn {
             background: #FF9800;
@@ -292,7 +315,12 @@
 <body>
     <div class="top-controls">
         <button id="darkModeToggle">🌓 Mode sombre</button>
-        <button id="langToggle">🌐 English</button>
+        <select id="langSelect" class="lang-select">
+            <option value="fr" selected>Français</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+        </select>
         <button id="randomBtn">🎲 Aléatoire</button>
     </div>
 
@@ -311,7 +339,7 @@
             <input type="hidden" id="avatarBase64" value="">
             <div id="avatarPreviewContainer" class="avatar-preview-container">
                 <img id="avatarPreview" src="" class="avatar-preview-img" alt="Aperçu">
-                <button type="button" id="btnRemoveImg" class="btn-remove-image" onclick="removeImage()">❌ Supprimer</button>
+                <button type="button" id="btnRemoveImg" class="btn-remove-image" onclick="removeImage()">Supprimer</button>
             </div>
         </div>
 
@@ -364,7 +392,7 @@
             <textarea id="backstory" placeholder="Décris l'histoire de ton personnage..."></textarea>
         </div>
 
-        <button id="btnPreview" onclick="showPreview()">Prévisualiser</button>
+        <button id="btnPreview" onclick="showPreview()">👀 Prévisualiser</button>
         <div class="download-buttons">
             <button id="btnDownloadJson" onclick="downloadJSON()">💾 JSON</button>
             <button id="btnDownloadDocx" onclick="downloadDOCX()">📄 DOCX (Word)</button>
@@ -381,11 +409,11 @@
 
     <footer>
         <p id="footComm">Créé pour la communauté JDR</p>
-        <p><a id="footLic" class="license-link" href="https://github.com/Ax4M3/RollSheet/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">📜 Sous licence MIT</a></p>
+        <p><a id="footLic" class="license-link" href="license.html" target="_blank">📜 Sous licence MIT</a></p>
         <div class="footer-links">
-            <a id="footRepo" href="https://github.com/Ax4M3/RollSheet" target="_blank" rel="noopener noreferrer">📂 Dépôt GitHub</a>
+            <a id="footRepo" href="https://github.com/Ax4M3/RollSheet" target="_blank">📂 Dépôt GitHub</a>
             <a href="https://piaille.fr/@Axm" target="_blank">🦣 Mastodon</a>
-             <div class="liberapay-container">
+            <div class="liberapay-container">
                 <script src="https://liberapay.com/AxM3/widgets/button.js"></script>
                 <noscript><a href="https://liberapay.com/AxM3/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a></noscript>
             </div>
@@ -402,12 +430,11 @@ const translations = {
     fr: {
         darkMode: "🌓 Mode sombre",
         lightMode: "🌓 Mode clair",
-        langToggle: "🌐 English",
         mainTitle: "RollSheet - Générateur de fiches JDR",
         mainSubtitle: "Remplis les champs ci-dessous pour créer ta fiche de personnage.",
         lblCharacterName: "Nom du personnage *",
         lblCharacterAvatar: "Image du personnage (optionnel)",
-        btnRemoveImg: "❌ Supprimer",
+        btnRemoveImg: "Supprimer",
         lblGameSystem: "Système de jeu *",
         lblRace: "Race",
         lblClass: "Classe",
@@ -417,7 +444,7 @@ const translations = {
         lblSkills: "Compétences (séparées par des virgules)",
         lblInventory: "Inventaire (séparé par des virgules)",
         lblBackstory: "Histoire (optionnel)",
-        btnPreview: "Prévisualiser",
+        btnPreview: "👀 Prévisualiser",
         btnDownloadJson: "💾 JSON",
         btnDownloadDocx: "📄 DOCX (Word)",
         btnDownloadPdf: "📥 PDF",
@@ -452,12 +479,11 @@ const translations = {
     en: {
         darkMode: "🌓 Dark Mode",
         lightMode: "🌓 Light Mode",
-        langToggle: "🌐 Français",
         mainTitle: "RollSheet - RPG Character Sheet Generator",
         mainSubtitle: "Fill in the fields below to create your character sheet.",
         lblCharacterName: "Character Name *",
         lblCharacterAvatar: "Character Image (optional)",
-        btnRemoveImg: "❌ Remove",
+        btnRemoveImg: "Remove",
         lblGameSystem: "Game System *",
         lblRace: "Race",
         lblClass: "Class",
@@ -467,7 +493,7 @@ const translations = {
         lblSkills: "Skills (separated by commas)",
         lblInventory: "Inventory (separated by commas)",
         lblBackstory: "Backstory (optional)",
-        btnPreview: "Preview",
+        btnPreview: "👀 Preview",
         btnDownloadJson: "💾 JSON",
         btnDownloadDocx: "📄 DOCX (Word)",
         btnDownloadPdf: "📥 PDF",
@@ -498,6 +524,104 @@ const translations = {
         sheetTitle: "Sheet - ",
         backButton: "⬅️ Back to form",
         copySuccess: "✅ Link copied to clipboard!"
+    },
+    es: {
+        darkMode: "🌓 Modo oscuro",
+        lightMode: "🌓 Modo claro",
+        mainTitle: "RollSheet - Generador de hojas de personaje",
+        mainSubtitle: "Complete los campos a continuación para crear la hoja de tu personaje.",
+        lblCharacterName: "Nombre del personaje *",
+        lblCharacterAvatar: "Imagen del personaje (opcional)",
+        btnRemoveImg: "Eliminar",
+        lblGameSystem: "Sistema de juego *",
+        lblRace: "Raza",
+        lblClass: "Clase",
+        lblLevel: "Nivel",
+        lblLoadJson: "Cargar un personaje (JSON):",
+        lblAttributes: "Atributos",
+        lblSkills: "Habilidades (separadas por comas)",
+        lblInventory: "Inventario (separado por comas)",
+        lblBackstory: "Historia (opcional)",
+        btnPreview: "👀 Vista previa",
+        btnDownloadJson: "💾 JSON",
+        btnDownloadDocx: "📄 DOCX (Word)",
+        btnDownloadPdf: "📥 PDF",
+        shareTitle: "🔗 Compartir esta hoja",
+        shareInstructions: "Copia este enlace para compartir tu hoja:",
+        btnCopyLink: "📋 Copiar enlace",
+        randomBtn: "🎲 Aleatorio",
+        footComm: "Creado para la comunidad de rol",
+        footLic: "📜 Bajo licencia MIT",
+        footRepo: "📂 Repositorio GitHub",
+        placeholderName: "Ej: Gandalf",
+        placeholderRace: "Ej: Elfo, Enano, Humano",
+        placeholderClass: "Ej: Mago, Guerrero, Ladrón",
+        placeholderSkills: "Ej: Magia, Atletismo, Persuasión",
+        placeholderInventory: "Ej: Espada, Escudo, Poción",
+        placeholderBackstory: "Describe la historia de tu personaje...",
+        dndAttrs: ["Fuerza", "Destreza", "Constitución", "Inteligencia", "Sabiduría", "Carisma"],
+        warhammerAttrs: ["Habilidad con armas", "Habilidad balística", "Fuerza", "Tenacidad", "Agilidad", "Inteligencia", "Voluntad", "Fe"],
+        dndSystems: ["Calabozos y Dragones", "Warhammer"],
+        sheetNoSpec: "No especificado",
+        sheetRace: "Raza:",
+        sheetClass: "Clase:",
+        sheetLevel: "Nivel:",
+        sheetAttr: "Atributos",
+        sheetSkills: "Habilidades",
+        sheetEquip: "Equipamiento",
+        sheetStory: "Historia",
+        sheetTitle: "Hoja - ",
+        backButton: "⬅️ Volver al formulario",
+        copySuccess: "✅ ¡Enlace copiado al portapapeles!"
+    },
+    de: {
+        darkMode: "🌓 Dunkler Modus",
+        lightMode: "🌓 Hellmodus",
+        mainTitle: "RollSheet - Charakterbogen-Generator",
+        mainSubtitle: "Fülle die Felder unten aus, um deinen Charakterbogen zu erstellen.",
+        lblCharacterName: "Charaktername *",
+        lblCharacterAvatar: "Charakterbild (optional)",
+        btnRemoveImg: "Entfernen",
+        lblGameSystem: "Spielsystem *",
+        lblRace: "Rasse",
+        lblClass: "Klasse",
+        lblLevel: "Stufe",
+        lblLoadJson: "Charakter laden (JSON):",
+        lblAttributes: "Attribute",
+        lblSkills: "Fähigkeiten (durch Kommas getrennt)",
+        lblInventory: "Inventar (durch Kommas getrennt)",
+        lblBackstory: "Hintergrund (optional)",
+        btnPreview: "👀 Vorschau",
+        btnDownloadJson: "💾 JSON",
+        btnDownloadDocx: "📄 DOCX (Word)",
+        btnDownloadPdf: "📥 PDF",
+        shareTitle: "🔗 Bogen teilen",
+        shareInstructions: "Kopiere diesen Link, um deinen Bogen zu teilen:",
+        btnCopyLink: "📋 Link kopieren",
+        randomBtn: "🎲 Zufällig",
+        footComm: "Erstellt für die Pen-&-Paper-Community",
+        footLic: "📜 Unter MIT-Lizenz",
+        footRepo: "📂 GitHub-Repository",
+        placeholderName: "Z. B. Gandalf",
+        placeholderRace: "Z. B. Elf, Zwerg, Mensch",
+        placeholderClass: "Z. B. Magier, Krieger, Schurke",
+        placeholderSkills: "Z. B. Magie, Athletik, Überredung",
+        placeholderInventory: "Z. B. Schwert, Schild, Trank",
+        placeholderBackstory: "Beschreibe die Hintergrundgeschichte deines Charakters...",
+        dndAttrs: ["Stärke", "Geschicklichkeit", "Konstitution", "Intelligenz", "Weisheit", "Charisma"],
+        warhammerAttrs: ["WS", "BS", "S", "T", "Ag", "Int", "WP", "Fel"],
+        dndSystems: ["Dungeons & Dragons", "Warhammer"],
+        sheetNoSpec: "Nicht angegeben",
+        sheetRace: "Rasse:",
+        sheetClass: "Klasse:",
+        sheetLevel: "Stufe:",
+        sheetAttr: "Attribute",
+        sheetSkills: "Fähigkeiten",
+        sheetEquip: "Ausrüstung",
+        sheetStory: "Hintergrund",
+        sheetTitle: "Bogen - ",
+        backButton: "⬅️ Zurück zum Formular",
+        copySuccess: "✅ Link in die Zwischenablage kopiert!"
     }
 };
 
@@ -505,89 +629,17 @@ let currentSystem = "dnd";
 let currentLang = localStorage.getItem('lang') || 'fr';
 let shareLink = '';
 
-loadAttributes();
-applyTranslations();
-setupEventListeners();
-loadFromLocalStorage();
-
-function applyTranslations() {
-    const t = translations[currentLang];
-    document.documentElement.lang = currentLang;
-
-    document.getElementById('darkModeToggle').textContent = document.body.classList.contains('dark-mode') ? t.lightMode : t.darkMode;
-    document.getElementById('langToggle').textContent = t.langToggle;
-    document.getElementById('randomBtn').textContent = t.randomBtn;
-
-    document.getElementById('mainTitle').textContent = t.mainTitle;
-    document.getElementById('mainSubtitle').textContent = t.mainSubtitle;
-
-    document.getElementById('lblCharacterName').textContent = t.lblCharacterName;
-    document.getElementById('lblCharacterAvatar').textContent = t.lblCharacterAvatar;
-    document.getElementById('btnRemoveImg').textContent = t.btnRemoveImg;
-    document.getElementById('lblGameSystem').textContent = t.lblGameSystem;
-    document.getElementById('lblRace').textContent = t.lblRace;
-    document.getElementById('lblClass').textContent = t.lblClass;
-    document.getElementById('lblLevel').textContent = t.lblLevel;
-    document.getElementById('lblLoadJson').textContent = t.lblLoadJson;
-    document.getElementById('lblAttributes').textContent = t.lblAttributes;
-    document.getElementById('lblSkills').textContent = t.lblSkills;
-    document.getElementById('lblInventory').textContent = t.lblInventory;
-    document.getElementById('lblBackstory').textContent = t.lblBackstory;
-
-    document.getElementById('btnPreview').textContent = t.btnPreview;
-    document.getElementById('btnDownloadJson').textContent = t.btnDownloadJson;
-    document.getElementById('btnDownloadDocx').textContent = t.btnDownloadDocx;
-    document.getElementById('btnDownloadPdf').textContent = t.btnDownloadPdf;
-
-    document.getElementById('shareTitle').textContent = t.shareTitle;
-    document.getElementById('shareInstructions').textContent = t.shareInstructions;
-    document.getElementById('btnCopyLink').textContent = t.btnCopyLink;
-
-    document.getElementById('footComm').textContent = t.footComm;
-    document.getElementById('footLic').textContent = t.footLic;
-    document.getElementById('footRepo').textContent = t.footRepo;
-
-    document.getElementById('name').placeholder = t.placeholderName;
-    document.getElementById('race').placeholder = t.placeholderRace;
-    document.getElementById('className').placeholder = t.placeholderClass;
-    document.getElementById('skills').placeholder = t.placeholderSkills;
-    document.getElementById('inventory').placeholder = t.placeholderInventory;
-    document.getElementById('backstory').placeholder = t.placeholderBackstory;
-
-    document.getElementById('systemDnd').textContent = t.dndSystems[0];
-    document.getElementById('systemWarhammer').textContent = t.dndSystems[1];
-
-    loadAttributes();
-}
-
-function toggleLang() {
-    currentLang = currentLang === 'fr' ? 'en' : 'fr';
-    localStorage.setItem('lang', currentLang);
-    applyTranslations();
-}
-
 function loadAttributes() {
     const container = document.getElementById('attributes-container');
     container.innerHTML = '';
-
     const t = translations[currentLang];
     const attrs = currentSystem === 'dnd'
-        ? systemAttributes.dnd.map((attr, index) => ({
-            key: attr,
-            label: t.dndAttrs[index]
-        }))
-        : systemAttributes.warhammer.map((attr, index) => ({
-            key: attr,
-            label: t.warhammerAttrs[index]
-        }));
-
+        ? systemAttributes.dnd.map((attr, index) => ({ key: attr, label: t.dndAttrs[index] }))
+        : systemAttributes.warhammer.map((attr, index) => ({ key: attr, label: t.warhammerAttrs[index] }));
     attrs.forEach(attr => {
         const group = document.createElement('div');
         group.className = 'attribute-input';
-        group.innerHTML = `
-            <label>${attr.label}:</label>
-            <input type="number" data-attr="${attr.label}" data-key="${attr.key}" min="1" max="100" value="10">
-        `;
+        group.innerHTML = `<label>${attr.label}:</label><input type="number" data-attr="${attr.label}" data-key="${attr.key}" min="1" max="100" value="10">`;
         container.appendChild(group);
     });
 }
@@ -595,7 +647,6 @@ function loadAttributes() {
 function previewAndSaveImage(event) {
     const file = event.target.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = function(e) {
         document.getElementById('avatarBase64').value = e.target.result;
@@ -615,33 +666,21 @@ function removeImage() {
 }
 
 function getCharacterData() {
-    const name = document.getElementById('name').value;
-    const system = document.getElementById('system').value;
-    const race = document.getElementById('race').value;
-    const className = document.getElementById('className').value;
-    const level = document.getElementById('level').value;
-    const avatar = document.getElementById('avatarBase64').value;
-    const skills = document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s);
-    const inventory = document.getElementById('inventory').value.split(',').map(i => i.trim()).filter(i => i);
-    const backstory = document.getElementById('backstory').value;
-
-    const attributes = {};
-    document.querySelectorAll('#attributes-container input').forEach(input => {
-        attributes[input.dataset.attr] = parseInt(input.value) || 10;
-    });
-
     return {
-        name: name,
-        system: system,
-        race: race || null,
-        class_name: className || null,
-        level: parseInt(level) || 1,
-        avatar: avatar || null,
-        attributes: attributes,
-        skills: skills,
-        inventory: inventory,
-        backstory: backstory || null,
-        game_system: system
+        name: document.getElementById('name').value,
+        system: document.getElementById('system').value,
+        race: document.getElementById('race').value,
+        class_name: document.getElementById('className').value,
+        level: parseInt(document.getElementById('level').value) || 1,
+        avatar: document.getElementById('avatarBase64').value,
+        attributes: Array.from(document.querySelectorAll('#attributes-container input')).reduce((acc, input) => {
+            acc[input.dataset.attr] = parseInt(input.value) || 10;
+            return acc;
+        }, {}),
+        skills: document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s),
+        inventory: document.getElementById('inventory').value.split(',').map(i => i.trim()).filter(i => i),
+        backstory: document.getElementById('backstory').value,
+        game_system: document.getElementById('system').value
     };
 }
 
@@ -655,7 +694,6 @@ function loadCharacterData(data) {
     document.getElementById('skills').value = data.skills ? data.skills.join(', ') : '';
     document.getElementById('inventory').value = data.inventory ? data.inventory.join(', ') : '';
     document.getElementById('backstory').value = data.backstory || '';
-
     const previewContainer = document.getElementById('avatarPreviewContainer');
     if (data.avatar) {
         document.getElementById('avatarPreview').src = data.avatar;
@@ -663,47 +701,37 @@ function loadCharacterData(data) {
     } else {
         previewContainer.style.display = 'none';
     }
-
     document.querySelectorAll('.system-option').forEach(opt => {
         opt.classList.remove('selected');
         if (opt.dataset.system === data.system) opt.classList.add('selected');
     });
     currentSystem = data.system;
     loadAttributes();
-
     setTimeout(() => {
         document.querySelectorAll('#attributes-container input').forEach(input => {
-            const attrName = input.dataset.attr;
-            const attrKey = input.dataset.key;
-            if (data.attributes) {
-                if (data.attributes[attrName] !== undefined) {
-                    input.value = data.attributes[attrName];
-                } else if (data.attributes[attrKey] !== undefined) {
-                    input.value = data.attributes[attrKey];
-                }
+            if (data.attributes && data.attributes[input.dataset.attr] !== undefined) {
+                input.value = data.attributes[input.dataset.attr];
             }
         });
     }, 100);
 }
 
 function saveToLocalStorage() {
-    const data = getCharacterData();
-    localStorage.setItem('lastCharacter', JSON.stringify(data));
+    localStorage.setItem('lastCharacter', JSON.stringify(getCharacterData()));
 }
 
 function loadFromLocalStorage() {
     const saved = localStorage.getItem('lastCharacter');
     if (saved) {
         try {
-            const data = JSON.parse(saved);
-            loadCharacterData(data);
+            loadCharacterData(JSON.parse(saved));
         } catch (e) {
             console.error("Erreur de chargement depuis localStorage", e);
         }
     }
 }
 
-function generateSheetHTML(character) {
+function generateSheetContent(character) {
     const t = translations[currentLang];
     const name = character.name || t.placeholderName.replace("Ex: ", "");
     const system = character.system;
@@ -715,162 +743,132 @@ function generateSheetHTML(character) {
     const inventory = character.inventory;
     const backstory = character.backstory;
     const attributes = character.attributes;
-
     let html = `
-<!DOCTYPE html>
-<html lang="${currentLang}">
-<head>
-    <meta charset="UTF-8">
-    <title>${t.sheetTitle} ${name}</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; color: #333; }
-        .sheet { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; }
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 20px; }
-        .identity-block { display: flex; align-items: center; gap: 20px; }
-        .avatar-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; background: #eee; }
-        h1 { color: ${system === 'dnd' ? '#8B0000' : '#004d98'}; margin: 0; }
-        .attributes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .attr-box { border: 1px solid #ccc; padding: 10px; text-align: center; background: #f9f9f9; }
-        .attr-name { font-weight: bold; }
-        .attr-value { font-size: 1.2em; }
-        .section { margin-bottom: 15px; }
-        .section h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
-        ul { list-style-type: none; padding: 0; }
-        li { padding: 5px 0; }
-        @media print { body { background: white; } .sheet { box-shadow: none; } }
-        .back-button {
-            display: block;
-            text-align: center;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 16px;
-        }
-        .back-button:hover {
-            background: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <div class="sheet">
-        <div class="header">
-            <div class="identity-block">
-                ${avatar ? `<img src="${avatar}" class="avatar-img" alt="Avatar">` : ''}
-                <div><h1>${name}</h1></div>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; color: #333; }
+            .sheet { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; }
+            .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 20px; }
+            .identity-block { display: flex; align-items: center; gap: 20px; }
+            .avatar-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; background: #eee; }
+            h1 { color: ${system === 'dnd' ? '#8B0000' : '#004d98'}; margin: 0; }
+            .attributes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+            .attr-box { border: 1px solid #ccc; padding: 10px; text-align: center; background: #f9f9f9; }
+            .attr-name { font-weight: bold; }
+            .attr-value { font-size: 1.2em; }
+            .section { margin-bottom: 15px; }
+            .section h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+            ul { list-style-type: none; padding: 0; }
+            li { padding: 5px 0; }
+            .back-button {
+                display: block;
+                text-align: center;
+                margin: 20px auto;
+                padding: 10px 20px;
+                background: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                text-decoration: none;
+                font-size: 16px;
+            }
+            .back-button:hover { background: #45a049; }
+        </style>
+        <div class="sheet">
+            <div class="header">
+                <div class="identity-block">
+                    ${avatar ? `<img src="${avatar}" class="avatar-img" alt="Avatar">` : ''}
+                    <div><h1>${name}</h1></div>
+                </div>
+                <div>
+                    <strong>${t.sheetRace}</strong> ${race}<br>
+                    <strong>${t.sheetClass}</strong> ${className}<br>
+                    <strong>${t.sheetLevel}</strong> ${level}
+                </div>
             </div>
-            <div>
-                <strong>${t.sheetRace}</strong> ${race}<br>
-                <strong>${t.sheetClass}</strong> ${className}<br>
-                <strong>${t.sheetLevel}</strong> ${level}
+            <div class="section">
+                <h2>${t.sheetAttr}</h2>
+                <div class="attributes">
+                    ${Object.entries(attributes).map(([attr, value]) => `
+                        <div class="attr-box">
+                            <div class="attr-name">${attr}</div>
+                            <div class="attr-value">${value}</div>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
-        </div>
-        <div class="section">
-            <h2>${t.sheetAttr}</h2>
-            <div class="attributes">
-                ${Object.entries(attributes).map(([attr, value]) => `
-                    <div class="attr-box">
-                        <div class="attr-name">${attr}</div>
-                        <div class="attr-value">${value}</div>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
     `;
-
     if (skills.length > 0) {
         html += `
-        <div class="section">
-            <h2>${t.sheetSkills}</h2>
-            <ul>${skills.map(skill => `<li>${skill}</li>`).join('')}</ul>
-        </div>
+            <div class="section">
+                <h2>${t.sheetSkills}</h2>
+                <ul>${skills.map(skill => `<li>${skill}</li>`).join('')}</ul>
+            </div>
         `;
     }
-
     if (inventory.length > 0) {
         html += `
-        <div class="section">
-            <h2>${t.sheetEquip}</h2>
-            <ul>${inventory.map(item => `<li>${item}</li>`).join('')}</ul>
-        </div>
+            <div class="section">
+                <h2>${t.sheetEquip}</h2>
+                <ul>${inventory.map(item => `<li>${item}</li>`).join('')}</ul>
+            </div>
         `;
     }
-
     if (backstory) {
         html += `
-        <div class="section">
-            <h2>${t.sheetStory}</h2>
-            <p>${backstory}</p>
-        </div>
+            <div class="section">
+                <h2>${t.sheetStory}</h2>
+                <p>${backstory}</p>
+            </div>
         `;
     }
-
-    html += `
-        <a href="javascript:window.close()" class="back-button">${t.backButton}</a>
-    </div>
-</body>
-</html>
-    `;
+    html += `<a href="javascript:window.close()" class="back-button">${t.backButton}</a></div>`;
     return html;
 }
 
 function showPreview() {
-    const character = getCharacterData();
-    const html = generateSheetHTML(character);
     const previewWindow = window.open();
-    previewWindow.document.write(html);
+    previewWindow.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Prévisualisation</title></head><body>${generateSheetContent(getCharacterData())}</body></html>`);
     previewWindow.document.close();
 }
 
 function downloadJSON() {
     const character = getCharacterData();
-    const data = JSON.stringify(character, null, 2);
-    const blob = new Blob([data], { type: 'application/json' });
     const t = translations[currentLang];
-    saveAs(blob, `${character.name || t.placeholderName.replace("Ex: ", "")}.json`);
+    saveAs(new Blob([JSON.stringify(character, null, 2)], { type: 'application/json' }), `${character.name || t.placeholderName.replace("Ex: ", "")}.json`);
 }
 
 function downloadDOCX() {
     const character = getCharacterData();
-    const html = generateSheetHTML(character);
-    const blob = new Blob([html], { type: 'text/html' });
     const t = translations[currentLang];
-    saveAs(blob, `${character.name || t.placeholderName.replace("Ex: ", "")}.docx`);
+    saveAs(new Blob([`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${character.name || 'Fiche'}</title></head><body>${generateSheetContent(character)}</body></html>`], { type: 'text/html' }), `${character.name || t.placeholderName.replace("Ex: ", "")}.docx`);
 }
 
 function downloadPDF() {
     const character = getCharacterData();
-    const html = generateSheetHTML(character);
     const t = translations[currentLang];
     const name = character.name || t.placeholderName.replace("Ex: ", "");
-
     const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
+    tempDiv.style.position = 'fixed';
+    tempDiv.style.top = '-9999px';
+    tempDiv.innerHTML = generateSheetContent(character);
     document.body.appendChild(tempDiv);
-
-    const opt = {
+    html2pdf().from(tempDiv).set({
         margin: 10,
         filename: `${name}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { scale: 2, logging: false, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    html2pdf().from(tempDiv).set(opt).save().then(() => {
+    }).save().then(() => {
+        document.body.removeChild(tempDiv);
+    }).catch(() => {
         document.body.removeChild(tempDiv);
     });
 }
 
 function generateShareLink() {
-    const character = getCharacterData();
-    const data = JSON.stringify(character);
-    const encodedData = btoa(encodeURIComponent(data));
     const baseUrl = window.location.origin + window.location.pathname;
-    shareLink = `${baseUrl}?data=${encodedData}`;
+    shareLink = `${baseUrl}?data=${btoa(encodeURIComponent(JSON.stringify(getCharacterData())))}`;
     document.getElementById('shareLink').textContent = shareLink;
     document.getElementById('shareLinkContainer').style.display = 'block';
 }
@@ -879,7 +877,7 @@ function copyShareLink() {
     const t = translations[currentLang];
     navigator.clipboard.writeText(shareLink).then(() => {
         alert(t.copySuccess);
-    }).catch(err => {
+    }).catch(() => {
         const textarea = document.createElement('textarea');
         textarea.value = shareLink;
         document.body.appendChild(textarea);
@@ -893,82 +891,84 @@ function copyShareLink() {
 function generateRandomCharacter() {
     const system = document.getElementById('system').value;
     const t = translations[currentLang];
-    let name, race, className, attributes = {};
-
-    const dndData = {
+    const data = system === 'dnd' ? {
         names: ["Aragorn", "Gandalf", "Legolas", "Gimli", "Frodon", "Bilbon"],
         races: ["Humain", "Elfe", "Nain", "Halfelin", "Orc"],
         classes: ["Guerrier", "Mage", "Voleur", "Prêtre", "Barbare"],
         skills: ["Magie", "Combat", "Furtivité", "Persuasion", "Athlétisme", "Survie"],
         inventory: ["Épée", "Bouclier", "Arc", "Potion de soin", "Armure", "Bâton"]
-    };
-
-    const warhammerData = {
+    } : {
         names: ["Sigmar", "Karl Franz", "Grimnir", "Balthasar", "Ludwig"],
         races: ["Humain", "Nain", "Elfe", "Haut-Elfe", "Orque"],
         classes: ["Guerrier", "Chasseur", "Prêtre", "Mage", "Mercenaire"],
         skills: ["Commandement", "Tir", "Mêlée", "Furtivité", "Résistance"],
         inventory: ["Épée", "Armure", "Bouclier", "Potion", "Hache"]
     };
-
-    const data = system === 'dnd' ? dndData : warhammerData;
-
-    name = data.names[Math.floor(Math.random() * data.names.length)];
-    race = data.races[Math.floor(Math.random() * data.races.length)];
-    className = data.classes[Math.floor(Math.random() * data.classes.length)];
-
+    const attributes = {};
     if (system === 'dnd') {
         const rollDice = () => {
             const rolls = [Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1];
             rolls.sort((a, b) => b - a);
             return rolls[0] + rolls[1];
         };
-        systemAttributes.dnd.forEach(attr => {
-            attributes[attr] = rollDice();
-        });
+        systemAttributes.dnd.forEach(attr => attributes[attr] = rollDice());
     } else {
-        systemAttributes.warhammer.forEach(attr => {
-            attributes[attr] = Math.floor(Math.random() * 60) + 20;
-        });
+        systemAttributes.warhammer.forEach(attr => attributes[attr] = Math.floor(Math.random() * 60) + 20);
     }
-
-    const skills = [];
-    for (let i = 0; i < 3; i++) {
-        const skill = data.skills[Math.floor(Math.random() * data.skills.length)];
-        if (!skills.includes(skill)) skills.push(skill);
-    }
-
-    const inventory = [];
-    for (let i = 0; i < 3; i++) {
-        const item = data.inventory[Math.floor(Math.random() * data.inventory.length)];
-        if (!inventory.includes(item)) inventory.push(item);
-    }
-
-    const level = Math.floor(Math.random() * 10) + 1;
-    const backstories = [
-        "Un aventurier en quête de gloire.",
-        "Un héros marqué par une tragédie.",
-        "Un mercenaire endurci par les batailles.",
-        "Un érudit en quête de savoir.",
-        "Un vagabond qui a vu trop de choses."
-    ];
-    const backstory = backstories[Math.floor(Math.random() * backstories.length)];
-
     const character = {
-        name: name,
+        name: data.names[Math.floor(Math.random() * data.names.length)],
         system: system,
-        race: race,
-        class_name: className,
-        level: level,
+        race: data.races[Math.floor(Math.random() * data.races.length)],
+        class_name: data.classes[Math.floor(Math.random() * data.classes.length)],
+        level: Math.floor(Math.random() * 10) + 1,
         attributes: attributes,
-        skills: skills,
-        inventory: inventory,
-        backstory: backstory,
+        skills: Array.from({length: 3}, () => data.skills[Math.floor(Math.random() * data.skills.length)]).filter((v, i, a) => a.indexOf(v) === i),
+        inventory: Array.from({length: 3}, () => data.inventory[Math.floor(Math.random() * data.inventory.length)]).filter((v, i, a) => a.indexOf(v) === i),
+        backstory: ["Un aventurier en quête de gloire.", "Un héros marqué par une tragédie.", "Un mercenaire endurci par les batailles.", "Un érudit en quête de savoir.", "Un vagabond qui a vu trop de choses."][Math.floor(Math.random() * 5)],
         game_system: system
     };
-
     loadCharacterData(character);
     generateShareLink();
+}
+
+function applyTranslations() {
+    const t = translations[currentLang];
+    document.documentElement.lang = currentLang;
+    document.getElementById('darkModeToggle').textContent = document.body.classList.contains('dark-mode') ? t.lightMode : t.darkMode;
+    document.getElementById('randomBtn').textContent = t.randomBtn;
+    document.getElementById('mainTitle').textContent = t.mainTitle;
+    document.getElementById('mainSubtitle').textContent = t.mainSubtitle;
+    document.getElementById('lblCharacterName').textContent = t.lblCharacterName;
+    document.getElementById('lblCharacterAvatar').textContent = t.lblCharacterAvatar;
+    document.getElementById('btnRemoveImg').textContent = t.btnRemoveImg;
+    document.getElementById('lblGameSystem').textContent = t.lblGameSystem;
+    document.getElementById('lblRace').textContent = t.lblRace;
+    document.getElementById('lblClass').textContent = t.lblClass;
+    document.getElementById('lblLevel').textContent = t.lblLevel;
+    document.getElementById('lblLoadJson').textContent = t.lblLoadJson;
+    document.getElementById('lblAttributes').textContent = t.lblAttributes;
+    document.getElementById('lblSkills').textContent = t.lblSkills;
+    document.getElementById('lblInventory').textContent = t.lblInventory;
+    document.getElementById('lblBackstory').textContent = t.lblBackstory;
+    document.getElementById('btnPreview').textContent = t.btnPreview;
+    document.getElementById('btnDownloadJson').textContent = t.btnDownloadJson;
+    document.getElementById('btnDownloadDocx').textContent = t.btnDownloadDocx;
+    document.getElementById('btnDownloadPdf').textContent = t.btnDownloadPdf;
+    document.getElementById('shareTitle').textContent = t.shareTitle;
+    document.getElementById('shareInstructions').textContent = t.shareInstructions;
+    document.getElementById('btnCopyLink').textContent = t.btnCopyLink;
+    document.getElementById('footComm').textContent = t.footComm;
+    document.getElementById('footLic').textContent = t.footLic;
+    document.getElementById('footRepo').textContent = t.footRepo;
+    document.getElementById('name').placeholder = t.placeholderName;
+    document.getElementById('race').placeholder = t.placeholderRace;
+    document.getElementById('className').placeholder = t.placeholderClass;
+    document.getElementById('skills').placeholder = t.placeholderSkills;
+    document.getElementById('inventory').placeholder = t.placeholderInventory;
+    document.getElementById('backstory').placeholder = t.placeholderBackstory;
+    document.getElementById('systemDnd').textContent = t.dndSystems[0];
+    document.getElementById('systemWarhammer').textContent = t.dndSystems[1];
+    loadAttributes();
 }
 
 function setupEventListeners() {
@@ -981,44 +981,41 @@ function setupEventListeners() {
             loadAttributes();
         });
     });
-
-    const inputs = document.querySelectorAll('input:not([type="file"]), textarea, select');
-    inputs.forEach(input => {
+    document.querySelectorAll('input:not([type="file"]), textarea, select').forEach(input => {
         input.addEventListener('input', saveToLocalStorage);
     });
-
     document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-    document.getElementById('langToggle').addEventListener('click', toggleLang);
+    document.getElementById('langSelect').addEventListener('change', () => {
+        currentLang = document.getElementById('langSelect').value;
+        localStorage.setItem('lang', currentLang);
+        applyTranslations();
+    });
     document.getElementById('randomBtn').addEventListener('click', generateRandomCharacter);
-
-    loadFromUrl();
+    const urlParams = new URLSearchParams(window.location.search);
+    const data = urlParams.get('data');
+    if (data) {
+        try {
+            loadCharacterData(JSON.parse(decodeURIComponent(atob(data))));
+        } catch (e) {
+            console.error("Erreur de chargement depuis URL:", e);
+        }
+    }
 }
 
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-    const t = translations[currentLang];
-    document.getElementById('darkModeToggle').textContent = document.body.classList.contains('dark-mode') ? t.lightMode : t.darkMode;
-}
-
-function loadFromUrl() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const data = urlParams.get('data');
-    if (data) {
-        try {
-            const decodedData = decodeURIComponent(atob(data));
-            const character = JSON.parse(decodedData);
-            loadCharacterData(character);
-        } catch (e) {
-            console.error("Erreur de chargement depuis URL : ", e);
-        }
-    }
+    applyTranslations();
 }
 
 if (localStorage.getItem('darkMode') === 'true') {
     document.body.classList.add('dark-mode');
-    document.getElementById('darkModeToggle').textContent = translations[currentLang].lightMode;
 }
+document.getElementById('langSelect').value = currentLang;
+loadAttributes();
+applyTranslations();
+setupEventListeners();
+loadFromLocalStorage();
     </script>
 </body>
 </html>
