@@ -55,6 +55,10 @@
             color: #eee;
             border-color: #666;
         }
+        body.dark-mode .lang-select option {
+            background-color: #444;
+            color: #eee;
+        }
         textarea {
             height: 100px;
             font-family: monospace;
@@ -82,7 +86,7 @@
             font-size: 14px;
             cursor: pointer;
             width: 150px;
-            margin: 0;
+            margin-left: auto;
             height: 40px;
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
@@ -97,18 +101,13 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23eee' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 8px center;
-            background-size: 12px
-        }
-        body.dark-mode .lang-select option {
-            background-color: #444;
-            color: #eee;
+            background-size: 12px;
         }
         .top-controls {
             display: flex;
-            justify-content: center;
+            align-items: center;
             gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            width: 100%;
         }
         #darkModeToggle, #randomBtn {
             display: block;
@@ -310,18 +309,210 @@
         .footer-links a:hover {
             text-decoration: underline;
         }
+        .dice-widget-wrapper {
+            position: fixed;
+            bottom: 20px;
+            right: 0;
+            display: flex;
+            align-items: stretch;
+            z-index: 1000;
+        }
+        .dice-widget-handle {
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 8px 0 0 8px;
+            padding: 10px 6px;
+            cursor: pointer;
+            box-shadow: -2px 2px 10px rgba(0,0,0,0.2);
+            font-size: 1em;
+            line-height: 1;
+            width: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+        }
+        .dice-widget-handle:hover {
+            background: #1976D2;
+        }
+        body.dark-mode .dice-widget-handle {
+            background: #1976D2;
+        }
+        body.dark-mode .dice-widget-handle:hover {
+            background: #145a9e;
+        }
+        .dice-roller-container {
+            background: white;
+            padding: 12px;
+            border-radius: 8px 0 0 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-right: none;
+            width: 120px;
+            font-size: 0.95em;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: translateX(0);
+        }
+        .dice-roller-container.collapsed {
+            transform: translateX(calc(100% + 20px));
+            opacity: 0;
+            pointer-events: none;
+        }
+        body.dark-mode .dice-roller-container {
+            background: #2b2b2b;
+            border-color: #444;
+        }
+        @media (max-width: 600px) {
+            .dice-widget-wrapper {
+                bottom: 12px;
+            }
+        }
+        .dice-title {
+            font-size: 0.95em;
+            font-weight: bold;
+            margin-bottom: 4px;
+            opacity: 0.8;
+            white-space: nowrap;
+        }
+        .dice-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px;
+            width: 100%;
+        }
+        .dice-btn {
+            padding: 7px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+            border: 1px solid #2196F3;
+            background: transparent;
+            color: #2196F3;
+            transition: all 0.2s;
+            text-align: center;
+            font-size: 0.95em;
+            min-width: 30px;
+        }
+        .dice-btn:hover {
+            background: #2196F3;
+            color: white;
+        }
+        #diceResult {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2196F3;
+            white-space: nowrap;
+        }
+        .dice-label {
+            font-size: 0.7em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        body.dark-mode .dice-label {
+            color: #aaa;
+        }
+        body.dark-mode #diceResult {
+            color: #64B5F6;
+        }
+        .dice-divider {
+            width: 100%;
+            margin: 4px 0;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+        body.dark-mode .dice-divider {
+            border-top-color: #444;
+        }
+        .dice-history-toggle {
+            position: relative;
+            width: 100%;
+            margin-top: 4px;
+        }
+        .dice-history-dropdown {
+            position: absolute;
+            left: auto;
+            right: 100%;
+            bottom: 100%;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 8px;
+            width: 240px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 1001;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        body.dark-mode .dice-history-dropdown {
+            background: #2b2b2b;
+            border-color: #444;
+            color: #eee;
+        }
+        #diceHistoryList {
+            max-height: 220px;
+            overflow-y: auto;
+            margin: 4px 0;
+            font-size: 0.9em;
+            text-align: left;
+        }
+        .dice-history-entry {
+            padding: 5px 2px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9em;
+        }
+        body.dark-mode .dice-history-entry {
+            border-bottom-color: #444;
+        }
+        #historyToggleBtn {
+            width: 100%;
+            margin-top: 4px;
+            padding: 6px 4px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            overflow: visible;
+            text-overflow: unset;
+        }
+        #clearHistoryBtn {
+            margin-top: 4px;
+            color: #f44336;
+            border-color: #f44336;
+            width: 100%;
+            padding: 6px 4px;
+            font-size: 0.85em;
+        }
+        #clearHistoryBtn:hover {
+            background: #f44336;
+            color: white;
+        }
+        body.dark-mode #clearHistoryBtn {
+            color: #ff8a80;
+            border-color: #ff8a80;
+        }
+        body.dark-mode #clearHistoryBtn:hover {
+            background: #ff8a80;
+            color: #222;
+        }
     </style>
 </head>
 <body>
     <div class="top-controls">
         <button id="darkModeToggle">🌓 Mode sombre</button>
+        <button id="randomBtn">🎲 Aléatoire</button>
         <select id="langSelect" class="lang-select">
             <option value="fr" selected>Français</option>
             <option value="en">English</option>
             <option value="es">Español</option>
             <option value="de">Deutsch</option>
         </select>
-        <button id="randomBtn">🎲 Aléatoire</button>
     </div>
 
     <h1 id="mainTitle">RollSheet - Générateur de fiches JDR</h1>
@@ -354,7 +545,66 @@
 
         <div class="form-group">
             <label id="lblRace" for="race">Race</label>
-            <input type="text" id="race" placeholder="Ex: Elfe, Nain, Humain">
+            <select id="race">
+                    <option value="">-- Choisir une race --</option>
+                    <option value="Aasimar">Aasimar</option>
+                    <option value="Aarakocra">Aarakocra</option>
+                    <option value="Autognome">Autognome</option>
+                    <option value="Bugbear">Cochon-garou (Bugbear)</option>
+                    <option value="Centaur">Centaure</option>
+                    <option value="Changeling">Changelin</option>
+                    <option value="Dhampir">Dhampir</option>
+                    <option value="Dragonborn">Drakéide (Dragonborn)</option>
+                    <option value="Duergar">Duergar</option>
+                    <option value="Eladrin">Éladrin</option>
+                    <option value="Elf">Elfe</option>
+                    <option value="Astral Elf">Elfe astral</option>
+                    <option value="Sea Elf">Elfe des mers</option>
+                    <option value="Fairy">Fée</option>
+                    <option value="Firbolg">Firbolg</option>
+                    <option value="Genasi">Genasi</option>
+                    <option value="Giff">Giff</option>
+                    <option value="Githyanki">Githyanki</option>
+                    <option value="Githzerai">Githzerai</option>
+                    <option value="Gnome">Gnome</option>
+                    <option value="Deep Gnome">Gnome des profondeurs</option>
+                    <option value="Goblin">Gobelin</option>
+                    <option value="Goliath">Goliath</option>
+                    <option value="Hadozee">Hadozee</option>
+                    <option value="Half-Elf">Demi-elfe</option>
+                    <option value="Halfling">Halfelin</option>
+                    <option value="Half-Orc">Demi-orque</option>
+                    <option value="Harengon">Harengon</option>
+                    <option value="Hexblood">Sang-sorcier (Hexblood)</option>
+                    <option value="Hobgoblin">Hobgobelin</option>
+                    <option value="Human">Humain</option>
+                    <option value="Kalashtar">Kalashtar</option>
+                    <option value="Kender">Kender</option>
+                    <option value="Kenku">Kenku</option>
+                    <option value="Kobold">Kobold</option>
+                    <option value="Leonin">Léonin</option>
+                    <option value="Lizardfolk">Homme-lézard (Lizardfolk)</option>
+                    <option value="Loxodon">Loxodon</option>
+                    <option value="Minotaur">Minotaure</option>
+                    <option value="Orc">Orque</option>
+                    <option value="Owlin">Plumelin (Owlin)</option>
+                    <option value="Plasmoid">Plasmoïde</option>
+                    <option value="Reborn">Ressuscité (Reborn)</option>
+                    <option value="Satyr">Satyre</option>
+                    <option value="Sea Elf">Elfe des mers</option>
+                    <option value="Shadar-kai">Shadar-kai</option>
+                    <option value="Shifter">Feral (Shifter)</option>
+                    <option value="Simic Hybrid">Hybride de Simic</option>
+                    <option value="Tabaxi">Tabaxi</option>
+                    <option value="Thri-kreen">Thri-kreen</option>
+                    <option value="Tiefling">Tieffelin</option>
+                    <option value="Tortle">Tortle</option>
+                    <option value="Triton">Triton</option>
+                    <option value="Vedalken">Vedalken</option>
+                    <option value="Verdan">Verdan</option>
+                    <option value="Warforged">Forgelier (Warforged)</option>
+                    <option value="Yuan-ti">Yuan-ti</option>
+                </select>
         </div>
 
         <div class="form-group">
@@ -385,6 +635,117 @@
         <div class="form-group">
             <label id="lblInventory" for="inventory">Inventaire (séparé par des virgules)</label>
             <input type="text" id="inventory" placeholder="Ex: Épée, Bouclier, Potion">
+        </div>
+
+        <div id="dndExtraSection" style="display:none;">
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
+            <h3 id="dndSectionTitle" style="margin-bottom: 15px;">📜 Détails</h3>
+
+            <div class="form-group">
+                <label id="lblAlignment" for="alignment">Alignement</label>
+                <select id="alignment"></select>
+            </div>
+
+            <div class="form-group">
+                <label id="lblBackground" for="background">Origine (Background)</label>
+                <input type="text" id="background" placeholder="Ex: Soldat, Noble, Criminel">
+            </div>
+
+            <div class="form-group">
+                <label id="lblPersonalityTraits" for="personalityTraits">Traits de personnalité</label>
+                <textarea id="personalityTraits" placeholder="Ex: Je juge les gens rapidement..." style="height: 60px;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label id="lblIdeal" for="ideal">Idéal</label>
+                <input type="text" id="ideal" placeholder="Ex: La liberté avant tout">
+            </div>
+
+            <div class="form-group">
+                <label id="lblBond" for="bond">Lien</label>
+                <input type="text" id="bond" placeholder="Ex: Je protège ma famille">
+            </div>
+
+            <div class="form-group">
+                <label id="lblFlaw" for="flaw">Défaut</label>
+                <input type="text" id="flaw" placeholder="Ex: Je suis trop confiant">
+            </div>
+
+            <h4 id="lblSpellsSection" style="margin: 20px 0 10px;">✨ Sorts</h4>
+
+            <div class="form-group">
+                <label id="lblSpellAbility" for="spellAbility">Caractéristique d'incantation</label>
+                <select id="spellAbility"></select>
+            </div>
+
+            <div class="attributes-grid" style="margin-bottom: 15px;">
+                <div class="attribute-input">
+                    <label id="lblSpellSaveDC">DD sauvegarde</label>
+                    <input type="number" id="spellSaveDC" min="0" max="30" value="10">
+                </div>
+                <div class="attribute-input">
+                    <label id="lblSpellAttackBonus">Bonus d'attaque</label>
+                    <input type="number" id="spellAttackBonus" min="-5" max="20" value="0">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lblSpellSlots">Emplacements de sorts par niveau</label>
+                <div id="spellSlotsContainer" class="attributes-grid"></div>
+            </div>
+
+            <div class="form-group">
+                <label id="lblKnownSpells" for="knownSpells">Sorts connus (séparés par des virgules)</label>
+                <input type="text" id="knownSpells" placeholder="Ex: Projectile magique, Bouclier, Boule de feu">
+            </div>
+
+            <h4 id="lblEquipmentSection" style="margin: 20px 0 10px;">⚔️ Équipement</h4>
+
+            <div class="form-group">
+                <label id="lblWeapons" for="weapons">Armes (séparées par des virgules)</label>
+                <input type="text" id="weapons" placeholder="Ex: Épée longue (1d8 tranchant), Arc court (1d6 perforant)">
+            </div>
+
+            <div class="attributes-grid" style="margin-bottom: 15px;">
+                <div class="attribute-input" style="width: auto;">
+                    <label id="lblArmorName">Armure</label>
+                    <input type="text" id="armorName" placeholder="Ex: Cotte de mailles" style="width: 140px !important; text-align: left;">
+                </div>
+                <div class="attribute-input">
+                    <label id="lblArmorAC">CA de base</label>
+                    <input type="number" id="armorAC" min="0" max="30" value="10">
+                </div>
+                <div class="attribute-input">
+                    <label id="lblShield">Bouclier</label>
+                    <input type="checkbox" id="hasShield" style="width: 24px !important; height: 24px; margin-top: 6px;">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lblCurrency">Monnaie</label>
+                <div class="attributes-grid">
+                    <div class="attribute-input">
+                        <label id="lblCurrencyPP">PP</label>
+                        <input type="number" id="currencyPP" min="0" value="0">
+                    </div>
+                    <div class="attribute-input">
+                        <label id="lblCurrencyPO">PO</label>
+                        <input type="number" id="currencyPO" min="0" value="0">
+                    </div>
+                    <div class="attribute-input">
+                        <label id="lblCurrencyPE">PE</label>
+                        <input type="number" id="currencyPE" min="0" value="0">
+                    </div>
+                    <div class="attribute-input">
+                        <label id="lblCurrencyPA">PA</label>
+                        <input type="number" id="currencyPA" min="0" value="0">
+                    </div>
+                    <div class="attribute-input">
+                        <label id="lblCurrencyPC">PC</label>
+                        <input type="number" id="currencyPC" min="0" value="0">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
@@ -419,8 +780,29 @@
             </div>
         </div>
     </footer>
-
-    <script>
+    <div class="dice-widget-wrapper">
+        <div class="dice-roller-container" id="diceRollerContainer">
+            <div class="dice-title" id="diceMainTitle">Dés</div>
+            <div class="dice-buttons">
+                <button class="dice-btn" onclick="rollDice(4)">d4</button>
+                <button class="dice-btn" onclick="rollDice(6)">d6</button>
+                <button class="dice-btn" onclick="rollDice(20)">d20</button>
+                <button class="dice-btn" onclick="rollDice(100)">d100</button>
+            </div>
+            <hr class="dice-divider">
+            <div id="diceResult">--</div>
+            <div class="dice-label" id="diceSubLabel">Résultat</div>
+            <div class="dice-history-toggle">
+                <button class="dice-btn" onclick="toggleHistory(event)" id="historyToggleBtn">Historique ▼</button>
+                <div class="dice-history-dropdown" id="diceHistoryDropdown">
+                    <div id="diceHistoryList"></div>
+                    <button class="dice-btn" onclick="clearHistory(event)" id="clearHistoryBtn">Effacer</button>
+                </div>
+            </div>
+        </div>
+        <button class="dice-widget-handle" id="diceWidgetHandle" onclick="toggleDiceWidget(event)">🎲</button>
+    </div>
+<script>
 const systemAttributes = {
     dnd: ["Force", "Dextérité", "Constitution", "Intelligence", "Sagesse", "Charisme"],
     warhammer: ["WS", "BS", "S", "T", "Ag", "Int", "WP", "Fel"]
@@ -474,7 +856,66 @@ const translations = {
         sheetStory: "Histoire",
         sheetTitle: "Fiche - ",
         backButton: "⬅️ Retour au formulaire",
-        copySuccess: "✅ Lien copié dans le presse-papiers !"
+        copySuccess: "✅ Lien copié dans le presse-papiers !",
+        diceResult: "Résultat",
+        diceTitle: "Dés",
+        noHistory: "Aucun lancer",
+        historyTitle: "Historique",
+        clearHistoryBtn: "Effacer",
+        showHistory: "Historique ▼",
+        hideHistory: "Masquer ▲",
+        dndSectionTitle: "📜 Détails",
+        lblAlignment: "Alignement",
+        lblBackground: "Origine (Background)",
+        placeholderBackground: "Ex: Soldat, Noble, Criminel",
+        lblPersonalityTraits: "Traits de personnalité",
+        placeholderPersonalityTraits: "Ex: Je juge les gens rapidement...",
+        lblIdeal: "Idéal",
+        placeholderIdeal: "Ex: La liberté avant tout",
+        lblBond: "Lien",
+        placeholderBond: "Ex: Je protège ma famille",
+        lblFlaw: "Défaut",
+        placeholderFlaw: "Ex: Je suis trop confiant",
+        lblSpellsSection: "✨ Sorts",
+        lblSpellAbility: "Caractéristique d'incantation",
+        lblSpellSaveDC: "DD sauvegarde",
+        lblSpellAttackBonus: "Bonus d'attaque",
+        lblSpellSlots: "Emplacements de sorts par niveau",
+        lblKnownSpells: "Sorts connus (séparés par des virgules)",
+        placeholderKnownSpells: "Ex: Projectile magique, Bouclier, Boule de feu",
+        lblEquipmentSection: "⚔️ Équipement",
+        lblWeapons: "Armes (séparées par des virgules)",
+        placeholderWeapons: "Ex: Épée longue (1d8 tranchant), Arc court (1d6 perforant)",
+        lblArmorName: "Armure",
+        placeholderArmorName: "Ex: Cotte de mailles",
+        lblArmorAC: "CA de base",
+        lblShield: "Bouclier",
+        lblCurrency: "Monnaie",
+        lblCurrencyPP: "PP",
+        lblCurrencyPO: "PO",
+        lblCurrencyPE: "PE",
+        lblCurrencyPA: "PA",
+        lblCurrencyPC: "PC",
+        alignments: ["Loyal Bon", "Neutre Bon", "Chaotique Bon", "Loyal Neutre", "Neutre", "Chaotique Neutre", "Loyal Mauvais", "Neutre Mauvais", "Chaotique Mauvais"],
+        spellAbilities: ["Intelligence", "Sagesse", "Charisme"],
+        sheetAlignment: "Alignement:",
+        sheetBackground: "Origine:",
+        sheetPersonality: "Traits de personnalité",
+        sheetIdeal: "Idéal:",
+        sheetBond: "Lien:",
+        sheetFlaw: "Défaut:",
+        sheetSpells: "Sorts",
+        sheetSpellAbility: "Caractéristique:",
+        sheetSpellSaveDC: "DD sauvegarde:",
+        sheetSpellAttackBonus: "Bonus d'attaque:",
+        sheetSpellSlots: "Emplacements de sorts",
+        sheetKnownSpells: "Sorts connus",
+        sheetWeapons: "Armes",
+        sheetArmor: "Armure",
+        sheetShieldYes: "avec bouclier",
+        sheetShieldNo: "sans bouclier",
+        sheetCurrency: "Monnaie",
+        sheetNone: "Aucun"
     },
     en: {
         darkMode: "🌓 Dark Mode",
@@ -523,7 +964,66 @@ const translations = {
         sheetStory: "Backstory",
         sheetTitle: "Sheet - ",
         backButton: "⬅️ Back to form",
-        copySuccess: "✅ Link copied to clipboard!"
+        copySuccess: "✅ Link copied to clipboard!",
+        diceResult: "Result",
+        diceTitle: "Dice",
+        noHistory: "No rolls yet",
+        historyTitle: "History",
+        clearHistoryBtn: "Clear",
+        showHistory: "History ▼",
+        hideHistory: "Hide ▲",
+        dndSectionTitle: "📜 Details",
+        lblAlignment: "Alignment",
+        lblBackground: "Background",
+        placeholderBackground: "E.g., Soldier, Noble, Criminal",
+        lblPersonalityTraits: "Personality Traits",
+        placeholderPersonalityTraits: "E.g., I judge people quickly...",
+        lblIdeal: "Ideal",
+        placeholderIdeal: "E.g., Freedom above all",
+        lblBond: "Bond",
+        placeholderBond: "E.g., I protect my family",
+        lblFlaw: "Flaw",
+        placeholderFlaw: "E.g., I'm overconfident",
+        lblSpellsSection: "✨ Spells",
+        lblSpellAbility: "Spellcasting Ability",
+        lblSpellSaveDC: "Save DC",
+        lblSpellAttackBonus: "Attack Bonus",
+        lblSpellSlots: "Spell Slots per Level",
+        lblKnownSpells: "Known Spells (comma-separated)",
+        placeholderKnownSpells: "E.g., Magic Missile, Shield, Fireball",
+        lblEquipmentSection: "⚔️ Equipment",
+        lblWeapons: "Weapons (comma-separated)",
+        placeholderWeapons: "E.g., Longsword (1d8 slashing), Shortbow (1d6 piercing)",
+        lblArmorName: "Armor",
+        placeholderArmorName: "E.g., Chain mail",
+        lblArmorAC: "Base AC",
+        lblShield: "Shield",
+        lblCurrency: "Currency",
+        lblCurrencyPP: "PP",
+        lblCurrencyPO: "GP",
+        lblCurrencyPE: "EP",
+        lblCurrencyPA: "SP",
+        lblCurrencyPC: "CP",
+        alignments: ["Lawful Good", "Neutral Good", "Chaotic Good", "Lawful Neutral", "True Neutral", "Chaotic Neutral", "Lawful Evil", "Neutral Evil", "Chaotic Evil"],
+        spellAbilities: ["Intelligence", "Wisdom", "Charisma"],
+        sheetAlignment: "Alignment:",
+        sheetBackground: "Background:",
+        sheetPersonality: "Personality Traits",
+        sheetIdeal: "Ideal:",
+        sheetBond: "Bond:",
+        sheetFlaw: "Flaw:",
+        sheetSpells: "Spells",
+        sheetSpellAbility: "Ability:",
+        sheetSpellSaveDC: "Save DC:",
+        sheetSpellAttackBonus: "Attack Bonus:",
+        sheetSpellSlots: "Spell Slots",
+        sheetKnownSpells: "Known Spells",
+        sheetWeapons: "Weapons",
+        sheetArmor: "Armor",
+        sheetShieldYes: "with shield",
+        sheetShieldNo: "without shield",
+        sheetCurrency: "Currency",
+        sheetNone: "None"
     },
     es: {
         darkMode: "🌓 Modo oscuro",
@@ -572,7 +1072,66 @@ const translations = {
         sheetStory: "Historia",
         sheetTitle: "Hoja - ",
         backButton: "⬅️ Volver al formulario",
-        copySuccess: "✅ ¡Enlace copiado al portapapeles!"
+        copySuccess: "✅ ¡Enlace copiado al portapapeles!",
+        diceResult: "Resultado",
+        diceTitle: "Dados",
+        noHistory: "Sin lanzamientos",
+        historyTitle: "Historial",
+        clearHistoryBtn: "Borrar",
+        showHistory: "Historial ▼",
+        hideHistory: "Ocultar ▲",
+        dndSectionTitle: "📜 Detalles",
+        lblAlignment: "Alineamiento",
+        lblBackground: "Trasfondo",
+        placeholderBackground: "Ej: Soldado, Noble, Criminal",
+        lblPersonalityTraits: "Rasgos de personalidad",
+        placeholderPersonalityTraits: "Ej: Juzgo a la gente rápidamente...",
+        lblIdeal: "Ideal",
+        placeholderIdeal: "Ej: La libertad ante todo",
+        lblBond: "Vínculo",
+        placeholderBond: "Ej: Protejo a mi familia",
+        lblFlaw: "Defecto",
+        placeholderFlaw: "Ej: Soy demasiado confiado",
+        lblSpellsSection: "✨ Hechizos",
+        lblSpellAbility: "Característica de lanzamiento",
+        lblSpellSaveDC: "CD de salvación",
+        lblSpellAttackBonus: "Bono de ataque",
+        lblSpellSlots: "Espacios de conjuro por nivel",
+        lblKnownSpells: "Hechizos conocidos (separados por comas)",
+        placeholderKnownSpells: "Ej: Proyectil mágico, Escudo, Bola de fuego",
+        lblEquipmentSection: "⚔️ Equipamiento",
+        lblWeapons: "Armas (separadas por comas)",
+        placeholderWeapons: "Ej: Espada larga (1d8 cortante), Arco corto (1d6 perforante)",
+        lblArmorName: "Armadura",
+        placeholderArmorName: "Ej: Cota de malla",
+        lblArmorAC: "CA base",
+        lblShield: "Escudo",
+        lblCurrency: "Monedas",
+        lblCurrencyPP: "PP",
+        lblCurrencyPO: "PO",
+        lblCurrencyPE: "PE",
+        lblCurrencyPA: "PA",
+        lblCurrencyPC: "PC",
+        alignments: ["Legal Bueno", "Neutral Bueno", "Caótico Bueno", "Legal Neutral", "Neutral", "Caótico Neutral", "Legal Malvado", "Neutral Malvado", "Caótico Malvado"],
+        spellAbilities: ["Inteligencia", "Sabiduría", "Carisma"],
+        sheetAlignment: "Alineamiento:",
+        sheetBackground: "Trasfondo:",
+        sheetPersonality: "Rasgos de personalidad",
+        sheetIdeal: "Ideal:",
+        sheetBond: "Vínculo:",
+        sheetFlaw: "Defecto:",
+        sheetSpells: "Hechizos",
+        sheetSpellAbility: "Característica:",
+        sheetSpellSaveDC: "CD de salvación:",
+        sheetSpellAttackBonus: "Bono de ataque:",
+        sheetSpellSlots: "Espacios de conjuro",
+        sheetKnownSpells: "Hechizos conocidos",
+        sheetWeapons: "Armas",
+        sheetArmor: "Armadura",
+        sheetShieldYes: "con escudo",
+        sheetShieldNo: "sin escudo",
+        sheetCurrency: "Monedas",
+        sheetNone: "Ninguno"
     },
     de: {
         darkMode: "🌓 Dunkler Modus",
@@ -621,7 +1180,66 @@ const translations = {
         sheetStory: "Hintergrund",
         sheetTitle: "Bogen - ",
         backButton: "⬅️ Zurück zum Formular",
-        copySuccess: "✅ Link in die Zwischenablage kopiert!"
+        copySuccess: "✅ Link in die Zwischenablage kopiert!",
+        diceResult: "Ergebnis",
+        diceTitle: "Würfel",
+        noHistory: "Kein Würfe",
+        historyTitle: "Verlauf",
+        clearHistoryBtn: "Löschen",
+        showHistory: "Verlauf ▼",
+        hideHistory: "Ausblenden ▲",
+        dndSectionTitle: "📜 Details",
+        lblAlignment: "Gesinnung",
+        lblBackground: "Hintergrund",
+        placeholderBackground: "Z. B. Soldat, Adliger, Verbrecher",
+        lblPersonalityTraits: "Persönlichkeitsmerkmale",
+        placeholderPersonalityTraits: "Z. B. Ich beurteile Leute schnell...",
+        lblIdeal: "Ideal",
+        placeholderIdeal: "Z. B. Freiheit über alles",
+        lblBond: "Bindung",
+        placeholderBond: "Z. B. Ich beschütze meine Familie",
+        lblFlaw: "Makel",
+        placeholderFlaw: "Z. B. Ich bin übermütig",
+        lblSpellsSection: "✨ Zauber",
+        lblSpellAbility: "Zauberattribut",
+        lblSpellSaveDC: "Rettungswurf-SG",
+        lblSpellAttackBonus: "Angriffsbonus",
+        lblSpellSlots: "Zauberplätze pro Stufe",
+        lblKnownSpells: "Bekannte Zauber (durch Kommas getrennt)",
+        placeholderKnownSpells: "Z. B. Magisches Geschoss, Schild, Feuerball",
+        lblEquipmentSection: "⚔️ Ausrüstung",
+        lblWeapons: "Waffen (durch Kommas getrennt)",
+        placeholderWeapons: "Z. B. Langschwert (1W8 hieb), Kurzbogen (1W6 stich)",
+        lblArmorName: "Rüstung",
+        placeholderArmorName: "Z. B. Kettenhemd",
+        lblArmorAC: "Basis-RK",
+        lblShield: "Schild",
+        lblCurrency: "Währung",
+        lblCurrencyPP: "PM",
+        lblCurrencyPO: "GM",
+        lblCurrencyPE: "EM",
+        lblCurrencyPA: "SM",
+        lblCurrencyPC: "KM",
+        alignments: ["Rechtschaffen Gut", "Neutral Gut", "Chaotisch Gut", "Rechtschaffen Neutral", "Neutral", "Chaotisch Neutral", "Rechtschaffen Böse", "Neutral Böse", "Chaotisch Böse"],
+        spellAbilities: ["Intelligenz", "Weisheit", "Charisma"],
+        sheetAlignment: "Gesinnung:",
+        sheetBackground: "Hintergrund:",
+        sheetPersonality: "Persönlichkeitsmerkmale",
+        sheetIdeal: "Ideal:",
+        sheetBond: "Bindung:",
+        sheetFlaw: "Makel:",
+        sheetSpells: "Zauber",
+        sheetSpellAbility: "Attribut:",
+        sheetSpellSaveDC: "Rettungswurf-SG:",
+        sheetSpellAttackBonus: "Angriffsbonus:",
+        sheetSpellSlots: "Zauberplätze",
+        sheetKnownSpells: "Bekannte Zauber",
+        sheetWeapons: "Waffen",
+        sheetArmor: "Rüstung",
+        sheetShieldYes: "mit Schild",
+        sheetShieldNo: "ohne Schild",
+        sheetCurrency: "Währung",
+        sheetNone: "Keine"
     }
 };
 
@@ -642,6 +1260,56 @@ function loadAttributes() {
         group.innerHTML = `<label>${attr.label}:</label><input type="number" data-attr="${attr.label}" data-key="${attr.key}" min="1" max="100" value="10">`;
         container.appendChild(group);
     });
+}
+
+function toggleDndSection() {
+    const section = document.getElementById('dndExtraSection');
+    if (!section) return;
+    section.style.display = currentSystem === 'dnd' ? 'block' : 'none';
+}
+
+function loadAlignmentOptions(selectedValue) {
+    const select = document.getElementById('alignment');
+    if (!select) return;
+    const t = translations[currentLang];
+    const codes = ["LG", "NG", "CG", "LN", "N", "CN", "LE", "NE", "CE"];
+    const current = selectedValue !== undefined ? selectedValue : select.value;
+    select.innerHTML = '<option value="">--</option>' + codes.map((code, i) =>
+        `<option value="${code}">${t.alignments[i]}</option>`
+    ).join('');
+    if (current) select.value = current;
+}
+
+function loadSpellAbilityOptions(selectedValue) {
+    const select = document.getElementById('spellAbility');
+    if (!select) return;
+    const t = translations[currentLang];
+    const codes = ["int", "wis", "cha"];
+    const current = selectedValue !== undefined ? selectedValue : select.value;
+    select.innerHTML = codes.map((code, i) =>
+        `<option value="${code}">${t.spellAbilities[i]}</option>`
+    ).join('');
+    if (current) select.value = current;
+}
+
+function loadSpellSlots(values) {
+    const container = document.getElementById('spellSlotsContainer');
+    if (!container) return;
+    let currentValues = values;
+    if (!currentValues) {
+        currentValues = {};
+        container.querySelectorAll('input').forEach(input => {
+            currentValues[input.dataset.level] = input.value;
+        });
+    }
+    container.innerHTML = '';
+    for (let level = 1; level <= 9; level++) {
+        const group = document.createElement('div');
+        group.className = 'attribute-input';
+        const value = currentValues && currentValues[level] !== undefined ? currentValues[level] : 0;
+        group.innerHTML = `<label>Niv. ${level}</label><input type="number" data-level="${level}" min="0" max="20" value="${value}">`;
+        container.appendChild(group);
+    }
 }
 
 function previewAndSaveImage(event) {
@@ -680,7 +1348,32 @@ function getCharacterData() {
         skills: document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s),
         inventory: document.getElementById('inventory').value.split(',').map(i => i.trim()).filter(i => i),
         backstory: document.getElementById('backstory').value,
-        game_system: document.getElementById('system').value
+        game_system: document.getElementById('system').value,
+        alignment: document.getElementById('alignment') ? document.getElementById('alignment').value : '',
+        background: document.getElementById('background') ? document.getElementById('background').value : '',
+        personalityTraits: document.getElementById('personalityTraits') ? document.getElementById('personalityTraits').value : '',
+        ideal: document.getElementById('ideal') ? document.getElementById('ideal').value : '',
+        bond: document.getElementById('bond') ? document.getElementById('bond').value : '',
+        flaw: document.getElementById('flaw') ? document.getElementById('flaw').value : '',
+        spellAbility: document.getElementById('spellAbility') ? document.getElementById('spellAbility').value : '',
+        spellSaveDC: document.getElementById('spellSaveDC') ? parseInt(document.getElementById('spellSaveDC').value) || 0 : 0,
+        spellAttackBonus: document.getElementById('spellAttackBonus') ? parseInt(document.getElementById('spellAttackBonus').value) || 0 : 0,
+        spellSlots: Array.from(document.querySelectorAll('#spellSlotsContainer input')).reduce((acc, input) => {
+            acc[input.dataset.level] = parseInt(input.value) || 0;
+            return acc;
+        }, {}),
+        knownSpells: document.getElementById('knownSpells') ? document.getElementById('knownSpells').value.split(',').map(s => s.trim()).filter(s => s) : [],
+        weapons: document.getElementById('weapons') ? document.getElementById('weapons').value.split(',').map(s => s.trim()).filter(s => s) : [],
+        armorName: document.getElementById('armorName') ? document.getElementById('armorName').value : '',
+        armorAC: document.getElementById('armorAC') ? parseInt(document.getElementById('armorAC').value) || 0 : 0,
+        hasShield: document.getElementById('hasShield') ? document.getElementById('hasShield').checked : false,
+        currency: {
+            pp: parseInt(document.getElementById('currencyPP') ? document.getElementById('currencyPP').value : 0) || 0,
+            po: parseInt(document.getElementById('currencyPO') ? document.getElementById('currencyPO').value : 0) || 0,
+            pe: parseInt(document.getElementById('currencyPE') ? document.getElementById('currencyPE').value : 0) || 0,
+            pa: parseInt(document.getElementById('currencyPA') ? document.getElementById('currencyPA').value : 0) || 0,
+            pc: parseInt(document.getElementById('currencyPC') ? document.getElementById('currencyPC').value : 0) || 0
+        }
     };
 }
 
@@ -694,6 +1387,26 @@ function loadCharacterData(data) {
     document.getElementById('skills').value = data.skills ? data.skills.join(', ') : '';
     document.getElementById('inventory').value = data.inventory ? data.inventory.join(', ') : '';
     document.getElementById('backstory').value = data.backstory || '';
+    document.getElementById('background').value = data.background || '';
+    document.getElementById('personalityTraits').value = data.personalityTraits || '';
+    document.getElementById('ideal').value = data.ideal || '';
+    document.getElementById('bond').value = data.bond || '';
+    document.getElementById('flaw').value = data.flaw || '';
+    document.getElementById('spellSaveDC').value = data.spellSaveDC || 10;
+    document.getElementById('spellAttackBonus').value = data.spellAttackBonus || 0;
+    document.getElementById('knownSpells').value = data.knownSpells ? data.knownSpells.join(', ') : '';
+    document.getElementById('weapons').value = data.weapons ? data.weapons.join(', ') : '';
+    document.getElementById('armorName').value = data.armorName || '';
+    document.getElementById('armorAC').value = data.armorAC || 10;
+    document.getElementById('hasShield').checked = !!data.hasShield;
+    document.getElementById('currencyPP').value = data.currency ? (data.currency.pp || 0) : 0;
+    document.getElementById('currencyPO').value = data.currency ? (data.currency.po || 0) : 0;
+    document.getElementById('currencyPE').value = data.currency ? (data.currency.pe || 0) : 0;
+    document.getElementById('currencyPA').value = data.currency ? (data.currency.pa || 0) : 0;
+    document.getElementById('currencyPC').value = data.currency ? (data.currency.pc || 0) : 0;
+    loadAlignmentOptions(data.alignment || '');
+    loadSpellAbilityOptions(data.spellAbility || '');
+    loadSpellSlots(data.spellSlots || {});
     const previewContainer = document.getElementById('avatarPreviewContainer');
     if (data.avatar) {
         document.getElementById('avatarPreview').src = data.avatar;
@@ -707,6 +1420,7 @@ function loadCharacterData(data) {
     });
     currentSystem = data.system;
     loadAttributes();
+    toggleDndSection();
     setTimeout(() => {
         document.querySelectorAll('#attributes-container input').forEach(input => {
             if (data.attributes && data.attributes[input.dataset.attr] !== undefined) {
@@ -814,6 +1528,58 @@ function generateSheetContent(character) {
             </div>
         `;
     }
+    if (system === 'dnd') {
+        const alignmentCodes = ["LG", "NG", "CG", "LN", "N", "CN", "LE", "NE", "CE"];
+        const spellAbilityCodes = ["int", "wis", "cha"];
+        const alignmentIndex = alignmentCodes.indexOf(character.alignment);
+        const alignmentLabel = alignmentIndex >= 0 ? t.alignments[alignmentIndex] : '';
+        const spellAbilityIndex = spellAbilityCodes.indexOf(character.spellAbility);
+        const spellAbilityLabel = spellAbilityIndex >= 0 ? t.spellAbilities[spellAbilityIndex] : '';
+
+        if (alignmentLabel || character.background || character.personalityTraits || character.ideal || character.bond || character.flaw) {
+            html += `<div class="section"><h2>${t.sheetPersonality}</h2>`;
+            if (alignmentLabel) html += `<p><strong>${t.sheetAlignment}</strong> ${alignmentLabel}</p>`;
+            if (character.background) html += `<p><strong>${t.sheetBackground}</strong> ${character.background}</p>`;
+            if (character.personalityTraits) html += `<p>${character.personalityTraits}</p>`;
+            if (character.ideal) html += `<p><strong>${t.sheetIdeal}</strong> ${character.ideal}</p>`;
+            if (character.bond) html += `<p><strong>${t.sheetBond}</strong> ${character.bond}</p>`;
+            if (character.flaw) html += `<p><strong>${t.sheetFlaw}</strong> ${character.flaw}</p>`;
+            html += `</div>`;
+        }
+
+        const spellSlotEntries = Object.entries(character.spellSlots || {}).filter(([lvl, val]) => val > 0);
+        if (spellAbilityLabel || character.knownSpells.length > 0 || spellSlotEntries.length > 0) {
+            html += `<div class="section"><h2>${t.sheetSpells}</h2>`;
+            if (spellAbilityLabel) html += `<p><strong>${t.sheetSpellAbility}</strong> ${spellAbilityLabel} &nbsp; <strong>${t.sheetSpellSaveDC}</strong> ${character.spellSaveDC} &nbsp; <strong>${t.sheetSpellAttackBonus}</strong> +${character.spellAttackBonus}</p>`;
+            if (spellSlotEntries.length > 0) {
+                html += `<p><strong>${t.sheetSpellSlots}:</strong> ${spellSlotEntries.map(([lvl, val]) => `Niv.${lvl}: ${val}`).join(' | ')}</p>`;
+            }
+            if (character.knownSpells.length > 0) {
+                html += `<p><strong>${t.sheetKnownSpells}:</strong> ${character.knownSpells.join(', ')}</p>`;
+            }
+            html += `</div>`;
+        }
+
+        const currency = character.currency || {};
+        const currencyParts = [];
+        if (currency.pp) currencyParts.push(`${currency.pp} ${t.lblCurrencyPP}`);
+        if (currency.po) currencyParts.push(`${currency.po} ${t.lblCurrencyPO}`);
+        if (currency.pe) currencyParts.push(`${currency.pe} ${t.lblCurrencyPE}`);
+        if (currency.pa) currencyParts.push(`${currency.pa} ${t.lblCurrencyPA}`);
+        if (currency.pc) currencyParts.push(`${currency.pc} ${t.lblCurrencyPC}`);
+
+        if (character.weapons.length > 0 || character.armorName || currencyParts.length > 0) {
+            html += `<div class="section"><h2>${t.sheetWeapons} & ${t.sheetArmor}</h2>`;
+            if (character.weapons.length > 0) {
+                html += `<p><strong>${t.sheetWeapons}:</strong></p><ul>${character.weapons.map(w => `<li>${w}</li>`).join('')}</ul>`;
+            }
+            if (character.armorName) {
+                html += `<p><strong>${t.sheetArmor}:</strong> ${character.armorName} (CA ${character.armorAC}, ${character.hasShield ? t.sheetShieldYes : t.sheetShieldNo})</p>`;
+            }
+            html += `<p><strong>${t.sheetCurrency}:</strong> ${currencyParts.length > 0 ? currencyParts.join(', ') : t.sheetNone}</p>`;
+            html += `</div>`;
+        }
+    }
     if (backstory) {
         html += `
             <div class="section">
@@ -892,8 +1658,8 @@ function generateRandomCharacter() {
     const system = document.getElementById('system').value;
     const t = translations[currentLang];
     const data = system === 'dnd' ? {
-        names: ["Aragorn", "Gandalf", "Legolas", "Gimli", "Frodon", "Bilbon"],
-        races: ["Humain", "Elfe", "Nain", "Halfelin", "Orc"],
+        names: ["Aragorn", "Mystan", "Delmirev", "Mamnen", "Forcas", "Balam", "Astaro", "Anakis", "Aym", "Yarjerit", "Chumbyxirinnish", "Resh", "Tarak", "Tawar", "Ubada", "Lezre", "Dannad", "Dren", "Ovak", "Vorka", "Nybarg", "Shenggen"],
+        races: ["Demi-elfe", "Demi-orc", "Drakéide", "Gnome", "Tieffelin", "Humain", "Orc", "Elfe", "Aasimar", "Goliath"],
         classes: ["Guerrier", "Mage", "Voleur", "Prêtre", "Barbare"],
         skills: ["Magie", "Combat", "Furtivité", "Persuasion", "Athlétisme", "Survie"],
         inventory: ["Épée", "Bouclier", "Arc", "Potion de soin", "Armure", "Bâton"]
@@ -927,6 +1693,40 @@ function generateRandomCharacter() {
         backstory: ["Un aventurier en quête de gloire.", "Un héros marqué par une tragédie.", "Un mercenaire endurci par les batailles.", "Un érudit en quête de savoir.", "Un vagabond qui a vu trop de choses."][Math.floor(Math.random() * 5)],
         game_system: system
     };
+    if (system === 'dnd') {
+        const alignmentCodes = ["LG", "NG", "CG", "LN", "N", "CN", "LE", "NE", "CE"];
+        const backgrounds = ["Soldat", "Noble", "Criminel", "Ermite", "Sage", "Artisan", "Marin", "Acolyte"];
+        const ideals = ["La liberté avant tout", "La justice pour tous", "Le savoir est pouvoir", "L'honneur avant la vie", "La survie du plus fort"];
+        const bonds = ["Je protège ma famille", "Je dois de l'argent à un maître voleur", "Mon village compte sur moi", "Je cherche à venger mes proches"];
+        const flaws = ["Je suis trop confiant", "J'ai du mal à faire confiance", "Je ne recule jamais devant un défi, même stupide", "L'appât du gain me perd souvent"];
+        const spellsPool = ["Projectile magique", "Bouclier", "Boule de feu", "Soin des blessures", "Lumière", "Invisibilité", "Vol", "Éclair"];
+        const weaponsPool = ["Épée longue (1d8 tranchant)", "Arc court (1d6 perforant)", "Dague (1d4 perforant)", "Hache d'armes (1d8 tranchant)", "Masse d'armes (1d6 contondant)"];
+        const armors = ["Armure de cuir", "Cotte de mailles", "Broigne", "Armure de plates", "Aucune"];
+        character.alignment = alignmentCodes[Math.floor(Math.random() * alignmentCodes.length)];
+        character.background = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+        character.ideal = ideals[Math.floor(Math.random() * ideals.length)];
+        character.bond = bonds[Math.floor(Math.random() * bonds.length)];
+        character.flaw = flaws[Math.floor(Math.random() * flaws.length)];
+        character.weapons = Array.from({length: 2}, () => weaponsPool[Math.floor(Math.random() * weaponsPool.length)]).filter((v, i, a) => a.indexOf(v) === i);
+        character.armorName = armors[Math.floor(Math.random() * armors.length)];
+        character.armorAC = Math.floor(Math.random() * 8) + 10;
+        character.hasShield = Math.random() > 0.6;
+        character.currency = {
+            pp: Math.random() > 0.7 ? Math.floor(Math.random() * 10) : 0,
+            po: Math.floor(Math.random() * 100),
+            pe: Math.random() > 0.7 ? Math.floor(Math.random() * 20) : 0,
+            pa: Math.floor(Math.random() * 50),
+            pc: Math.floor(Math.random() * 30)
+        };
+        const isCaster = ["Mage", "Prêtre"].includes(character.class_name);
+        if (isCaster) {
+            character.spellAbility = character.class_name === 'Mage' ? 'int' : 'wis';
+            character.spellSaveDC = 8 + Math.floor(Math.random() * 5);
+            character.spellAttackBonus = 2 + Math.floor(Math.random() * 5);
+            character.knownSpells = Array.from({length: 3}, () => spellsPool[Math.floor(Math.random() * spellsPool.length)]).filter((v, i, a) => a.indexOf(v) === i);
+            character.spellSlots = { 1: 3, 2: character.level > 3 ? 2 : 0 };
+        }
+    }
     loadCharacterData(character);
     generateShareLink();
 }
@@ -934,40 +1734,89 @@ function generateRandomCharacter() {
 function applyTranslations() {
     const t = translations[currentLang];
     document.documentElement.lang = currentLang;
-    document.getElementById('darkModeToggle').textContent = document.body.classList.contains('dark-mode') ? t.lightMode : t.darkMode;
-    document.getElementById('randomBtn').textContent = t.randomBtn;
-    document.getElementById('mainTitle').textContent = t.mainTitle;
-    document.getElementById('mainSubtitle').textContent = t.mainSubtitle;
-    document.getElementById('lblCharacterName').textContent = t.lblCharacterName;
-    document.getElementById('lblCharacterAvatar').textContent = t.lblCharacterAvatar;
-    document.getElementById('btnRemoveImg').textContent = t.btnRemoveImg;
-    document.getElementById('lblGameSystem').textContent = t.lblGameSystem;
-    document.getElementById('lblRace').textContent = t.lblRace;
-    document.getElementById('lblClass').textContent = t.lblClass;
-    document.getElementById('lblLevel').textContent = t.lblLevel;
-    document.getElementById('lblLoadJson').textContent = t.lblLoadJson;
-    document.getElementById('lblAttributes').textContent = t.lblAttributes;
-    document.getElementById('lblSkills').textContent = t.lblSkills;
-    document.getElementById('lblInventory').textContent = t.lblInventory;
-    document.getElementById('lblBackstory').textContent = t.lblBackstory;
-    document.getElementById('btnPreview').textContent = t.btnPreview;
-    document.getElementById('btnDownloadJson').textContent = t.btnDownloadJson;
-    document.getElementById('btnDownloadDocx').textContent = t.btnDownloadDocx;
-    document.getElementById('btnDownloadPdf').textContent = t.btnDownloadPdf;
-    document.getElementById('shareTitle').textContent = t.shareTitle;
-    document.getElementById('shareInstructions').textContent = t.shareInstructions;
-    document.getElementById('btnCopyLink').textContent = t.btnCopyLink;
-    document.getElementById('footComm').textContent = t.footComm;
-    document.getElementById('footLic').textContent = t.footLic;
-    document.getElementById('footRepo').textContent = t.footRepo;
-    document.getElementById('name').placeholder = t.placeholderName;
-    document.getElementById('race').placeholder = t.placeholderRace;
-    document.getElementById('className').placeholder = t.placeholderClass;
-    document.getElementById('skills').placeholder = t.placeholderSkills;
-    document.getElementById('inventory').placeholder = t.placeholderInventory;
-    document.getElementById('backstory').placeholder = t.placeholderBackstory;
-    document.getElementById('systemDnd').textContent = t.dndSystems[0];
-    document.getElementById('systemWarhammer').textContent = t.dndSystems[1];
+    if(document.getElementById('darkModeToggle')) document.getElementById('darkModeToggle').textContent = document.body.classList.contains('dark-mode') ? t.lightMode : t.darkMode;
+    if(document.getElementById('randomBtn')) document.getElementById('randomBtn').textContent = t.randomBtn;
+    if(document.getElementById('mainTitle')) document.getElementById('mainTitle').textContent = t.mainTitle;
+    if(document.getElementById('mainSubtitle')) document.getElementById('mainSubtitle').textContent = t.mainSubtitle;
+    if(document.getElementById('lblCharacterName')) document.getElementById('lblCharacterName').textContent = t.lblCharacterName;
+    if(document.getElementById('lblCharacterAvatar')) document.getElementById('lblCharacterAvatar').textContent = t.lblCharacterAvatar;
+    if(document.getElementById('btnRemoveImg')) document.getElementById('btnRemoveImg').textContent = t.btnRemoveImg;
+    if(document.getElementById('lblGameSystem')) document.getElementById('lblGameSystem').textContent = t.lblGameSystem;
+    if(document.getElementById('lblRace')) document.getElementById('lblRace').textContent = t.lblRace;
+    if(document.getElementById('lblClass')) document.getElementById('lblClass').textContent = t.lblClass;
+    if(document.getElementById('lblLevel')) document.getElementById('lblLevel').textContent = t.lblLevel;
+    if(document.getElementById('lblLoadJson')) document.getElementById('lblLoadJson').textContent = t.lblLoadJson;
+    if(document.getElementById('lblAttributes')) document.getElementById('lblAttributes').textContent = t.lblAttributes;
+    if(document.getElementById('lblSkills')) document.getElementById('lblSkills').textContent = t.lblSkills;
+    if(document.getElementById('lblInventory')) document.getElementById('lblInventory').textContent = t.lblInventory;
+    if(document.getElementById('lblBackstory')) document.getElementById('lblBackstory').textContent = t.lblBackstory;
+    if(document.getElementById('btnPreview')) document.getElementById('btnPreview').textContent = t.btnPreview;
+    if(document.getElementById('btnDownloadJson')) document.getElementById('btnDownloadJson').textContent = t.btnDownloadJson;
+    if(document.getElementById('btnDownloadDocx')) document.getElementById('btnDownloadDocx').textContent = t.btnDownloadDocx;
+    if(document.getElementById('btnDownloadPdf')) document.getElementById('btnDownloadPdf').textContent = t.btnDownloadPdf;
+    if(document.getElementById('shareTitle')) document.getElementById('shareTitle').textContent = t.shareTitle;
+    if(document.getElementById('shareInstructions')) document.getElementById('shareInstructions').textContent = t.shareInstructions;
+    if(document.getElementById('btnCopyLink')) document.getElementById('btnCopyLink').textContent = t.btnCopyLink;
+    if(document.getElementById('footComm')) document.getElementById('footComm').textContent = t.footComm;
+    if(document.getElementById('footLic')) document.getElementById('footLic').textContent = t.footLic;
+    if(document.getElementById('footRepo')) document.getElementById('footRepo').textContent = t.footRepo;
+    if(document.getElementById('name')) document.getElementById('name').placeholder = t.placeholderName;
+    if(document.getElementById('race')) document.getElementById('race').placeholder = t.placeholderRace;
+    if(document.getElementById('className')) document.getElementById('className').placeholder = t.placeholderClass;
+    if(document.getElementById('skills')) document.getElementById('skills').placeholder = t.placeholderSkills;
+    if(document.getElementById('inventory')) document.getElementById('inventory').placeholder = t.placeholderInventory;
+    if(document.getElementById('backstory')) document.getElementById('backstory').placeholder = t.placeholderBackstory;
+    if(document.getElementById('systemDnd')) document.getElementById('systemDnd').textContent = t.dndSystems[0];
+    if(document.getElementById('systemWarhammer')) document.getElementById('systemWarhammer').textContent = t.dndSystems[1];
+    const diceMainTitle = document.getElementById('diceMainTitle');
+    const diceSubLabel = document.getElementById('diceSubLabel');
+    if (diceMainTitle && t.diceTitle) diceMainTitle.textContent = t.diceTitle;
+    if (diceSubLabel && t.diceResult) diceSubLabel.textContent = t.diceResult;
+    const clearBtn = document.getElementById('clearHistoryBtn');
+    if (clearBtn) clearBtn.textContent = t.clearHistoryBtn;
+    const historyBtn = document.getElementById('historyToggleBtn');
+    const historyDropdown = document.getElementById('diceHistoryDropdown');
+    if (historyBtn && historyDropdown) {
+        const isVisible = historyDropdown.style.display === 'block';
+        historyBtn.textContent = isVisible ? t.hideHistory : t.showHistory;
+    }
+    if (typeof updateHistoryDisplay === 'function') updateHistoryDisplay();
+    if(document.getElementById('dndSectionTitle')) document.getElementById('dndSectionTitle').textContent = t.dndSectionTitle;
+    if(document.getElementById('lblAlignment')) document.getElementById('lblAlignment').textContent = t.lblAlignment;
+    if(document.getElementById('lblBackground')) document.getElementById('lblBackground').textContent = t.lblBackground;
+    if(document.getElementById('background')) document.getElementById('background').placeholder = t.placeholderBackground;
+    if(document.getElementById('lblPersonalityTraits')) document.getElementById('lblPersonalityTraits').textContent = t.lblPersonalityTraits;
+    if(document.getElementById('personalityTraits')) document.getElementById('personalityTraits').placeholder = t.placeholderPersonalityTraits;
+    if(document.getElementById('lblIdeal')) document.getElementById('lblIdeal').textContent = t.lblIdeal;
+    if(document.getElementById('ideal')) document.getElementById('ideal').placeholder = t.placeholderIdeal;
+    if(document.getElementById('lblBond')) document.getElementById('lblBond').textContent = t.lblBond;
+    if(document.getElementById('bond')) document.getElementById('bond').placeholder = t.placeholderBond;
+    if(document.getElementById('lblFlaw')) document.getElementById('lblFlaw').textContent = t.lblFlaw;
+    if(document.getElementById('flaw')) document.getElementById('flaw').placeholder = t.placeholderFlaw;
+    if(document.getElementById('lblSpellsSection')) document.getElementById('lblSpellsSection').textContent = t.lblSpellsSection;
+    if(document.getElementById('lblSpellAbility')) document.getElementById('lblSpellAbility').textContent = t.lblSpellAbility;
+    if(document.getElementById('lblSpellSaveDC')) document.getElementById('lblSpellSaveDC').textContent = t.lblSpellSaveDC;
+    if(document.getElementById('lblSpellAttackBonus')) document.getElementById('lblSpellAttackBonus').textContent = t.lblSpellAttackBonus;
+    if(document.getElementById('lblSpellSlots')) document.getElementById('lblSpellSlots').textContent = t.lblSpellSlots;
+    if(document.getElementById('lblKnownSpells')) document.getElementById('lblKnownSpells').textContent = t.lblKnownSpells;
+    if(document.getElementById('knownSpells')) document.getElementById('knownSpells').placeholder = t.placeholderKnownSpells;
+    if(document.getElementById('lblEquipmentSection')) document.getElementById('lblEquipmentSection').textContent = t.lblEquipmentSection;
+    if(document.getElementById('lblWeapons')) document.getElementById('lblWeapons').textContent = t.lblWeapons;
+    if(document.getElementById('weapons')) document.getElementById('weapons').placeholder = t.placeholderWeapons;
+    if(document.getElementById('lblArmorName')) document.getElementById('lblArmorName').textContent = t.lblArmorName;
+    if(document.getElementById('armorName')) document.getElementById('armorName').placeholder = t.placeholderArmorName;
+    if(document.getElementById('lblArmorAC')) document.getElementById('lblArmorAC').textContent = t.lblArmorAC;
+    if(document.getElementById('lblShield')) document.getElementById('lblShield').textContent = t.lblShield;
+    if(document.getElementById('lblCurrency')) document.getElementById('lblCurrency').textContent = t.lblCurrency;
+    if(document.getElementById('lblCurrencyPP')) document.getElementById('lblCurrencyPP').textContent = t.lblCurrencyPP;
+    if(document.getElementById('lblCurrencyPO')) document.getElementById('lblCurrencyPO').textContent = t.lblCurrencyPO;
+    if(document.getElementById('lblCurrencyPE')) document.getElementById('lblCurrencyPE').textContent = t.lblCurrencyPE;
+    if(document.getElementById('lblCurrencyPA')) document.getElementById('lblCurrencyPA').textContent = t.lblCurrencyPA;
+    if(document.getElementById('lblCurrencyPC')) document.getElementById('lblCurrencyPC').textContent = t.lblCurrencyPC;
+    loadAlignmentOptions();
+    loadSpellAbilityOptions();
+    loadSpellSlots();
+    toggleDndSection();
     loadAttributes();
 }
 
@@ -979,6 +1828,7 @@ function setupEventListeners() {
             currentSystem = option.dataset.system;
             document.getElementById('system').value = currentSystem;
             loadAttributes();
+            toggleDndSection();
         });
     });
     document.querySelectorAll('input:not([type="file"]), textarea, select').forEach(input => {
@@ -1008,14 +1858,89 @@ function toggleDarkMode() {
     applyTranslations();
 }
 
-if (localStorage.getItem('darkMode') === 'true') {
-    document.body.classList.add('dark-mode');
+function toggleDiceWidget(event) {
+    if (event) event.stopPropagation();
+    const container = document.getElementById('diceRollerContainer');
+    container.classList.toggle('collapsed');
+    localStorage.setItem('diceWidgetCollapsed', container.classList.contains('collapsed'));
+    if (container.classList.contains('collapsed')) {
+        document.getElementById('diceHistoryDropdown').style.display = 'none';
+    }
 }
-document.getElementById('langSelect').value = currentLang;
-loadAttributes();
-applyTranslations();
-setupEventListeners();
-loadFromLocalStorage();
+document.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+    }
+    document.getElementById('langSelect').value = currentLang;
+    loadFromLocalStorage();
+    applyTranslations();
+    setupEventListeners();
+    updateHistoryDisplay();
+    const savedCollapsed = localStorage.getItem('diceWidgetCollapsed');
+    const shouldCollapse = savedCollapsed !== null ? savedCollapsed === 'true' : window.innerWidth < 600;
+    if (shouldCollapse) {
+        document.getElementById('diceRollerContainer').classList.add('collapsed');
+    }
+    document.getElementById('attributes-container').addEventListener('input', saveToLocalStorage);
+    const dndSection = document.getElementById('dndExtraSection');
+    if (dndSection) {
+        dndSection.addEventListener('input', saveToLocalStorage);
+        dndSection.addEventListener('change', saveToLocalStorage);
+    }
+document.addEventListener('click', () => {
+    const dropdown = document.getElementById('diceHistoryDropdown');
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+        document.getElementById('historyToggleBtn').textContent = translations[currentLang].showHistory || 'Historique ▼';
+    }
+});
+});
+let diceHistory = JSON.parse(localStorage.getItem('diceHistory')) || [];
+let historyVisible = false;
+window.rollDice = function(faces) {
+    const result = Math.floor(Math.random() * faces) + 1;
+    document.getElementById('diceResult').textContent = result;
+
+    const entry = {
+        dice: `d${faces}`,
+        result: result,
+        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+    };
+    diceHistory.unshift(entry);
+    if (diceHistory.length > 20) diceHistory.pop();
+    localStorage.setItem('diceHistory', JSON.stringify(diceHistory));
+    updateHistoryDisplay();
+};
+function toggleHistory(event) {
+    if (event) event.stopPropagation();
+    const dropdown = document.getElementById('diceHistoryDropdown');
+    const btn = document.getElementById('historyToggleBtn');
+    const isVisible = dropdown.style.display === 'block';
+    dropdown.style.display = isVisible ? 'none' : 'block';
+    btn.textContent = isVisible ?
+        (translations[currentLang].showHistory || 'Historique ▼') :
+        (translations[currentLang].hideHistory || 'Masquer ▲');
+}
+function clearHistory(event) {
+    if (event) event.stopPropagation();
+    diceHistory = [];
+    localStorage.removeItem('diceHistory');
+    updateHistoryDisplay();
+    document.getElementById('diceResult').textContent = '--';
+}
+function updateHistoryDisplay() {
+    const historyList = document.getElementById('diceHistoryList');
+    const t = translations[currentLang];
+
+    if (diceHistory.length === 0) {
+        historyList.innerHTML = `<div class="dice-history-entry" style="color: #999;">${t.noHistory || 'Aucun lancer'}</div>`;
+        return;
+    }
+
+    historyList.innerHTML = diceHistory.map(entry =>
+        `<div class="dice-history-entry">${entry.dice}: <strong>${entry.result}</strong> <span style="float: right; font-size: 0.75em;">${entry.time}</span></div>`
+    ).join('');
+}
     </script>
 </body>
 </html>
