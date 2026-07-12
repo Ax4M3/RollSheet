@@ -13,6 +13,8 @@ The project is written entirely in HTML, CSS, and pure JavaScript, and runs dire
 
 **[To test the online tool (GitHub Pages)](https://ax4m3.github.io/RollSheet/)**
 
+-> *Tool from a previous project : [See the archived repo](https://github.com/Ax4M3/fiches-jdr)*
+
 ### Langues
 - Deutscher Sprache : [README auf Deutsch](README.de.md)
 - Versión en español : [README en español](README.es.md)
@@ -26,7 +28,7 @@ The project is written entirely in HTML, CSS, and pure JavaScript, and runs dire
 - **Multilingual system**: Interface available in Deutch (DE), English (EN), Español (ES), and Français (FR).
 - **Responsive theme**: Built-in dark mode to protect your eyes during late-night sessions.
 - **Export multi-formats** :
-  - **📥 PDF**: Generate a print-ready character sheet via.
+  - **📥 PDF**: Generate a print-ready PDF file.
   - **📄 DOCX (Word)**: Export an editable file to fine-tune your character sheet in your word processor.
   - **💾 JSON**: Save your character's data structure to reload it later.
   - **Share**: Share your character sheet using the generated link provided.

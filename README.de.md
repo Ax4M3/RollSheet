@@ -13,6 +13,8 @@ Das Projekt ist vollständig in HTML, CSS und reinem JavaScript programmiert und
 
 **[So testen Sie das Online-Tool (GitHub Pages)](https://ax4m3.github.io/RollSheet/)**
 
+-> *Tool aus einem früheren projekt : [Seihe das archivierte repo](https://github.com/Ax4M3/fiches-jdr)*
+
 ### Prache
 - English version : [README in English](README.en.md)
 - Versión en español : [README en español](README.es.md)
@@ -27,7 +29,7 @@ Das Projekt ist vollständig in HTML, CSS und reinem JavaScript programmiert und
 - **Mehrsprachiges System**: Die Benutzeroberfläche ist auf Deutsch (DE), English (EN),  Español (ES) et Français (FR) verfügbar.
 - **Responsives Design**: Integrierte Verwaltung eines Dunkelmodus, um Ihre Augen bei nächtlichen Spielsitzungen zu schonen.
 - **Export in verschiedene Formate** :
-  - **📥 PDF**: Erstellen Sie ein druckfertiges Datenblatt über.
+  - **📥 PDF**: Eine druckfertige datei im PDF-format erstellen.
   - **📄 DOCX (Word)**: Exportieren Sie eine bearbeitbare Datei, um Ihr Datenblatt in Ihrem Textverarbeitungsprogramm weiter zu verfeinern.
   - **💾 JSON**: Speichern Sie die Datenstruktur Ihres Charakters, um sie später wieder zu laden.
   - **Teilen**: Teilen Sie Ihre Charakterbeschreibung über den generierten Link.
